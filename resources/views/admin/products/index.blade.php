@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@section('title')
+    Products | Buket_ku.id
+@endsection
+
 @section('content')
 <div class="container mx-auto px-4 py-4">
     <!-- Header dengan judul dan tombol tambah -->

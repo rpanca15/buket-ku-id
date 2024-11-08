@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -32,14 +33,25 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'required|string|max:255|min:5',
+            'description' => 'required|string|min:10',
             'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
+            'stock' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        Product::create($request->all());
+        $image = $request->file('image');
+        $image->storeAs('public/product', $image->hashName());
+
+        Product::create([
+            'image' => $image->hashName(),
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'category_id' => $request->category_id,
+        ]);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -66,17 +78,43 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        // Validasi data yang diterima
         $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi gambar
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required|exists:categories,id'
         ]);
 
-        $product->update($request->all());
+        // Cek apakah ada file gambar baru yang diunggah
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image->storeAs('public/products', $image->hashName());
+            Storage::delete('public/products/'.$product->image);
 
-        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil diperbarui.');
+            $product->update([
+                'image'         => $image->hashName(),
+                'name'         => $request->name,
+                'description'   => $request->description,
+                'price'         => $request->price,
+                'stock'         => $request->stock,
+                'category_id'   => $request->category_id
+            ]);
+        } else {
+            $product->update([
+                'name'         => $request->name,
+                'description'   => $request->description,
+                'price'         => $request->price,
+                'stock'         => $request->stock,
+                'category_id'   => $request->category_id
+            ]);
+        }
+
+        $product->save();
+
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
     }
 
     /**
@@ -85,6 +123,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+        Storage::delete('public/products/'. $product->image);
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus.');
     }
 }
