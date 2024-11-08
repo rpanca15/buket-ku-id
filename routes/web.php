@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
@@ -21,6 +22,16 @@ Route::resource('/admin/products', ProductController::class)
         'destroy' => 'products.destroy',
     ]);
 
+Route::resource('/admin/categories', CategoryController::class)
+    ->names([
+        'index' => 'categories.index',
+        'create' => 'categories.create',
+        'store' => 'categories.store',
+        'show' => 'categories.show',
+        'edit' => 'categories.edit',
+        'update' => 'categories.update',
+        'destroy' => 'categories.destroy',
+    ]);
 // Route untuk resource orders
 // Route::resource('/admin/orders', OrderController::class)
 //     ->names([
