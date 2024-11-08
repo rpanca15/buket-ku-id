@@ -34,7 +34,7 @@
 <body class="bg-gray-100">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="relative w-64 bg-purple-600 text-white shadow-lg h-full flex flex-col justify-between">
+        <aside class="relative w-64 bg-purple-700 text-white shadow-lg h-full flex flex-col justify-between">
             <div class="py-6 px-6">
                 <img src="{{ asset('images/logotrans.png') }}" alt="Logo Buket_ku.id">
             </div>

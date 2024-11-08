@@ -6,8 +6,8 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold">Product</h1>
         <a href="{{ route('products.create') }}"
-           class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-           Create
+           class="flex items-center bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+           <i class="fas fa-plus text-xl"></i>&nbsp;Tambah Produk
         </a>
     </div>
 
