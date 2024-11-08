@@ -33,7 +33,7 @@
                 <div id="file-name" class="mt-2 text-gray-600 text-center hidden"></div>
                 <!-- Tombol Reset Gambar -->
                 <button id="reset-button"
-                    class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition hidden">
+                    class="mt-4 bg-x-red text-white px-4 py-2 rounded-lg hover:bg-opacity-80 transition hidden">
                     <i class="fas fa-times text-xl text-white"></i>
                 </button>
                 @error('image')
@@ -109,11 +109,11 @@
                 <!-- Tombol Simpan -->
                 <div class="flex justify-between mt-4">
                     <button type="submit" title="Simpan"
-                        class="w-[64px] bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition w-24">
+                        class="w-[64px] bg-x-yellow text-white py-3 rounded-lg hover:bg-opacity-80 transition w-24">
                         <i class="fas fa-save"></i>
                     </button>
                     <button type="reset" title="Reset"
-                        class="w-[64px] bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition w-24">
+                        class="w-[64px] bg-x-red text-white py-3 rounded-lg hover:bg-opacity-80 transition w-24">
                         <i class="fas fa-undo"></i>
                     </button>
                 </div>

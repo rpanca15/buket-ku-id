@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->decimal('total', 8, 2);
-            $table->foreignId('status_id')->constrained('orders_status')->default(1); // Menggunakan FK ke orders_status
+            $table->integer('product_count'); // Jumlah produk dalam pesanan
+            $table->date('cod_date'); // Tanggal COD
+            $table->string('cod_location'); // Lokasi COD
+            $table->decimal('total', 10, 2); // Total harga
+            $table->foreignId('status_id')->constrained('orders_status')->default(1); // Status pesanan
             $table->timestamps();
         });
     }

@@ -5,28 +5,28 @@
 @endsection
 
 @section('content')
-<div class="container mx-auto px-4 py-4">
+<div class="container mx-auto px-6 py-4">
     <!-- Header dengan judul dan tombol tambah -->
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold">Product</h1>
         <a href="{{ route('products.create') }}"
-           class="flex items-center bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
-           <i class="fas fa-plus text-xl"></i>&nbsp;Tambah Produk
+           class="flex items-center bg-x-green text-white px-4 py-2 rounded-lg hover:bg-opacity-80 transition">
+           <i class="fas fa-plus text-xl mr-1"></i>&nbsp;Tambah
         </a>
     </div>
 
     <!-- Tabel Produk -->
-    <div class="bg-white shadow-lg rounded-lg p-6">
+    <div class="bg-white shadow-lg rounded-lg p-4">
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr>
                     <th class="border-b p-4 bg-gray-100">ID</th>
                     <th class="border-b p-4 bg-gray-100">Nama Produk</th>
-                    <th class="border-b p-4 bg-gray-100">Deskripsi</th>
-                    <th class="border-b p-4 bg-gray-100">Harga</th>
-                    <th class="border-b p-4 bg-gray-100">Stok</th>
+                    <th class="border-b p-4 bg-gray-100">Qty</th>
                     <th class="border-b p-4 bg-gray-100">Kategori</th>
-                    <th class="border-b p-4 bg-gray-100 text-center">Aksi</th>
+                    <th class="border-b p-4 bg-gray-100">Harga</th>
+                    <th class="border-b p-4 bg-gray-100">Deskripsi</th>
+                    <th class="border-b p-4 bg-gray-100 text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,8 +35,8 @@
                         <td class="border-b p-4">{{ $product->id }}</td>
                         <td class="border-b p-4">{{ $product->name }}</td>
                         <td class="border-b p-4">{{ $product->description }}</td>
-                        <td class="border-b p-4">Rp{{ number_format($product->price, 2, ',', '.') }}</td>
                         <td class="border-b p-4">{{ $product->stock }}</td>
+                        <td class="border-b p-4">Rp{{ number_format($product->price, 2, ',', '.') }}</td>
                         <td class="border-b p-4">{{ $product->category->name ?? '-' }}</td>
                         <td class="border-b p-4 text-center">
                             <a href="{{ route('products.edit', $product->id) }}"

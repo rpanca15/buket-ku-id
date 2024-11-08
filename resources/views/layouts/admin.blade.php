@@ -34,72 +34,51 @@
 <body class="bg-gray-100">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="relative w-64 bg-purple-700 text-white shadow-lg h-full flex flex-col justify-between">
+        <aside class="relative w-64 bg-x-purple text-white shadow-lg h-full flex flex-col gap-8 justify-between">
             <div class="py-6 px-6">
                 <img src="{{ asset('images/logotrans.png') }}" alt="Logo Buket_ku.id">
             </div>
-            <nav class="flex-grow flex items-center justify-center">
+            <nav class="flex-grow flex items-start justify-center">
                 <ul class="space-y-1 w-full">
                     <li>
-                        <a href="/admin"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-tachometer-alt"></i> <!-- Dashboard Icon -->
                             <span class="ml-2">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-list-alt"></i> <!-- Categories Icon -->
-                            <span class="ml-2">Categories</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/admin/products"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
+                        <a href="{{ route('products.index') }}"
+                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-box"></i> <!-- Products Icon -->
                             <span class="ml-2">Products</span>
                         </a>
                     </li>
                     <li>
                         <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
+                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-shopping-cart"></i> <!-- Orders Icon -->
                             <span class="ml-2">Orders</span>
                         </a>
                     </li>
                     <li>
                         <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
+                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-paint-brush"></i> <!-- Custom Orders Icon -->
                             <span class="ml-2">Custom Orders</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-credit-card"></i> <!-- Payments Icon -->
-                            <span class="ml-2">Payments</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-star"></i> <!-- Reviews Icon -->
-                            <span class="ml-2">Reviews</span>
                         </a>
                     </li>
                 </ul>
             </nav>
             <a href="#"
-                class="flex items-center font-bold justify-center py-3 px-4 text-white bg-red-500 hover:bg-red-600 transition-colors duration-300 ease-in-out">
-                <i class="fas fa-sign-out-alt"></i> <!-- Logout Icon -->
+                class="flex items-center font-bold justify-center py-3 px-4 text-white bg-x-red hover:bg-red-600 transition-colors duration-300 ease-in-out">
+                <i class="fas fa-sign-out-alt"></i>
                 <span class="ml-2">Logout</span>
             </a>
         </aside>
 
         <!-- Main content -->
-        <main class="flex-1 p-6 h-full overflow-auto bg-white">
+        <main class="flex-1 h-full overflow-auto bg-white">
             @yield('content')
         </main>
     </div>
