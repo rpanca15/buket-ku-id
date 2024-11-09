@@ -68,7 +68,7 @@
                 <!-- Harga Produk -->
                 <div class="mb-4">
                     <label for="price" class="block text-sm font-semibold text-gray-700 mb-1">Harga Produk</label>
-                    <input type="number" step="0.01" id="price" name="price" value="{{ old('price') }}"
+                    <input type="number" step="1000" min="0" id="price" name="price" value="{{ old('price') }}"
                         class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('price') border-red-500 @enderror"
                         required>
                     @error('price')
@@ -79,7 +79,7 @@
                 <!-- Stok Produk -->
                 <div class="mb-4">
                     <label for="stock" class="block text-sm font-semibold text-gray-700 mb-1">Stok Produk</label>
-                    <input type="number" id="stock" name="stock" value="{{ old('stock') }}"
+                    <input type="number" id="stock" min="0" name="stock" value="{{ old('stock') }}"
                         class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('stock') border-red-500 @enderror"
                         required>
                     @error('stock')

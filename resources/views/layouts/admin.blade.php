@@ -11,37 +11,39 @@
         /* Style for the active menu item */
         .active {
             background-color: white;
-            color: #6B46C1; /* purple-600 */
+            color: #6B46C1;
+            /* purple-600 */
         }
     </style>
     <script>
         // Get all the menu links
         const menuLinks = document.querySelectorAll('aside nav ul li a');
-    
+
         // Add click event to each link
         menuLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
+            link.addEventListener('click', function(e) {
                 // Remove 'active' class from all links
                 menuLinks.forEach(link => link.classList.remove('active'));
-    
+
                 // Add 'active' class to the clicked link
                 this.classList.add('active');
             });
         });
-    </script>        
+    </script>
 </head>
 
 <body class="bg-gray-100">
     <div class="flex h-screen">
         <!-- Sidebar -->
         <aside class="relative w-64 bg-x-purple text-white shadow-lg h-full flex flex-col gap-8 justify-between">
-            <div class="py-6 px-6">
-                <img src="{{ asset('images/logotrans.png') }}" alt="Logo Buket_ku.id">
+            <div>
+                <img src="{{ asset('assets/images/logotrans.png') }}" alt="Logo Buket_ku.id" class="w-full h-auto">
             </div>
+
             <nav class="flex-grow flex items-start justify-center">
                 <ul class="space-y-1 w-full">
                     <li>
-                        <a href="{{ route('admin.dashboard') }}"
+                        <a href="{{ route('admin') }}"
                             class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-tachometer-alt"></i> <!-- Dashboard Icon -->
                             <span class="ml-2">Dashboard</span>
@@ -55,7 +57,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="{{ route('orders.index') }}"
                             class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-shopping-cart"></i> <!-- Orders Icon -->
                             <span class="ml-2">Orders</span>
@@ -70,15 +72,18 @@
                     </li>
                 </ul>
             </nav>
-            <a href="#"
-                class="flex items-center font-bold justify-center py-3 px-4 text-white bg-x-red hover:bg-red-600 transition-colors duration-300 ease-in-out">
-                <i class="fas fa-sign-out-alt"></i>
-                <span class="ml-2">Logout</span>
-            </a>
+            <form action="{{ route('logout') }}" method="POST" class="inline">
+                @csrf
+                <button type="submit"
+                    class="flex items-center font-bold justify-center py-3 px-4 text-white bg-x-red hover:bg-red-600 transition-colors duration-300 ease-in-out w-full">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="ml-2">Logout</span>
+                </button>
+            </form>
         </aside>
 
         <!-- Main content -->
-        <main class="flex-1 h-full overflow-auto bg-white">
+        <main class="flex-1 h-full overflow-auto bg-x-grey">
             @yield('content')
         </main>
     </div>

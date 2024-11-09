@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="container mx-auto bg-x-grey px-6 py-4 flex flex-col h-screen">
+    <div class="container mx-auto px-6 py-4 flex flex-col h-screen">
         <div>
             <h1 class="text-4xl font-bold">Dashboard Admin</h1>
             <p class="mt-2 text-[#909193] text-[16px]">Selamat datang di dashboard admin! Di sini Anda bisa mengelola semua
@@ -32,7 +32,7 @@
         </div>
 
         <!-- Tabel Recent Orders -->
-        <div class="mt-8 p-4 bg-white shadow rounded-lg max-h-[calc(100vh-300px)]">
+        <div class="mt-8 p-4 bg-white shadow rounded-lg max-h-[calc(100vh-300px)] flex flex-col">
             <h2 class="text-2xl text-[#2B3674] font-bold">Recent Orders</h2>
             <div class="max-h-[calc(100vh-300px)] overflow-auto">
                 <table class="min-w-full mt-4 bg-white">

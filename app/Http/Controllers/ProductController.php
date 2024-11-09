@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -15,7 +17,10 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('category')->get();
-        return view('admin.products.index', compact('products'));
+        if (Auth::check() && Auth::user()->role == 'admin') {
+            return view('admin.products.index', compact('products')); // Jika admin
+        }
+        return view('products.index', compact('products')); // Jika user atau guest
     }
 
     /**
@@ -53,7 +58,7 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
         ]);
 
-        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan.');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
 
     /**
@@ -124,6 +129,6 @@ class ProductController extends Controller
     {
         $product->delete();
         Storage::delete('public/products/'. $product->image);
-        return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus.');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus.');
     }
 }
