@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 
 Route::resource('/', HomeController::class);
@@ -32,9 +33,7 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 
 // Rute untuk admin dengan akses penuh
 Route::middleware(['role:admin'])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin.dashboard');
-    })->name('admin');
+    Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
 
     Route::resource('/admin/products', ProductController::class)
         ->names([

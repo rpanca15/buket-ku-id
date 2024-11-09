@@ -18,15 +18,15 @@
             <div class="grid grid-cols-3 gap-4 mt-4">
                 <div class="bg-white p-4 shadow rounded-lg">
                     <h3 class="text-lg text-[#7B7F83] text-sm">Total Pesanan</h3>
-                    <p class="text-[28px] text-[#2B3674] font-semibold">100</p>
+                    <p class="text-[28px] text-[#2B3674] font-semibold">{{ $totalOrders }}</p>
                 </div>
                 <div class="bg-white p-4 shadow rounded-lg">
                     <h3 class="text-lg text-[#7B7F83] text-sm">Pesanan Diproses</h3>
-                    <p class="text-[28px] text-[#2B3674] font-semibold">75</p>
+                    <p class="text-[28px] text-[#2B3674] font-semibold">{{ $processedOrders }}</p>
                 </div>
                 <div class="bg-white p-4 shadow rounded-lg">
                     <h3 class="text-lg text-[#7B7F83] text-sm">Pesanan Selesai</h3>
-                    <p class="text-[28px] text-[#2B3674] font-semibold">25</p>
+                    <p class="text-[28px] text-[#2B3674] font-semibold">{{ $completedOrders }}</p>
                 </div>
             </div>
         </div>
@@ -49,16 +49,18 @@
                 <div class="overflow-y-auto max-h-[calc(100vh-400px)]">
                     <table class="min-w-full bg-white table-fixed">
                         <tbody>
-                            <tr>
-                                <td class="text-[#2B3674] p-4 font-semibold w-1/5">1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold w-1/5">User 1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold w-1/5">Rp. 100.000</td>
-                                <td class="text-[#2B3674] p-4 font-semibold w-1/5">Pending</td>
-                                <td class="p-4 w-[80px]">
-                                    <a href="#"
-                                        class="text-[#2B3674] font-semibold hover:underline hover:text-blue-600">Detail</a>
-                                </td>
-                            </tr>
+                            @foreach ($recentOrders as $order)
+                                <tr>
+                                    <td class="text-[#2B3674] p-4 font-semibold w-1/5">{{ $order->id }}</td>
+                                    <td class="text-[#2B3674] p-4 font-semibold w-1/5">{{ $order->user->name ?? 'Unknown' }}</td>
+                                    <td class="text-[#2B3674] p-4 font-semibold w-1/5">Rp. {{ number_format($order->total) }}</td>
+                                    <td class="text-[#2B3674] p-4 font-semibold w-1/5">{{ $order->status->status }}</td>
+                                    <td class="p-4 w-[80px]">
+                                        <a href="{{ route('orders.show', $order->id) }}"
+                                            class="text-[#2B3674] font-semibold hover:underline hover:text-blue-600">Detail</a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
