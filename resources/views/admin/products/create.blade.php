@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="container mx-auto px-4 py-2 relative">
+    <div class="container mx-auto p-4 relative">
         <a href="{{ route('products.index') }}" title="Kembali ke Daftar Produk"
             class="text-black-700 group rounded-lg absolute top-4 left-4">
             <i class="fas fa-arrow-left text-xl group-hover:opacity-60"></i>
@@ -15,39 +15,39 @@
             enctype="multipart/form-data">
             @csrf
 
-            <!-- Gambar Produk dengan Dropzone -->
-            <div id="div-upload" class="flex-1 bg-white shadow-lg rounded-lg p-6">
-                <div class="flex justify-center mb-4 hidden" id="preview-container">
-                    <img id="image-preview" class="w-full h-auto rounded border">
-                </div>
-                <label for="file-input"
-                    class="flex flex-col justify-center items-center bg-gray-50 border border-dashed border-gray-400 rounded-lg h-full cursor-pointer hover:bg-gray-100 transition"
-                    id="upload-label">
-                    <i id="icon-upload"
-                        class="fas fa-plus text-4xl w-24 h-24 flex items-center justify-center text-gray-400 border border-dashed border-gray-400 rounded"></i>
-                    <span id="drop-instruction" class="text-gray-500 text-center text-lg">Seret dan lepas gambar di sini
-                        atau klik untuk memilih file</span>
-                </label>
-                <input type="file" id="file-input" name="image" accept="image/*"
-                    class="hidden @error('image') is-invalid @enderror">
-                <div id="file-name" class="mt-2 text-gray-600 text-center hidden"></div>
-                <!-- Tombol Reset Gambar -->
-                <button id="reset-button"
-                    class="mt-4 bg-x-red text-white px-4 py-2 rounded-lg hover:bg-opacity-80 transition hidden">
-                    <i class="fas fa-times text-xl text-white"></i>
-                </button>
-                @error('image')
-                    <div class="text-red-500 mt-2">{{ $message }}</div>
-                @enderror
-            </div>
-
             <!-- Form Section untuk detail lainnya -->
-            <div class="flex-1 bg-white shadow-lg rounded-lg p-6">
+            <div class="flex-1 flex flex-col gap-6 bg-white shadow-lg rounded-lg p-6">
+                <!-- Gambar Produk dengan Dropzone -->
+                <div id="div-upload" class="flex-1 bg-white">
+                    <div class="flex justify-center mb-4 hidden" id="preview-container">
+                        <img id="image-preview" class="w-auto h-[200px] rounded border">
+                    </div>
+                    <label for="file-input"
+                        class="flex flex-col justify-center items-center p-4 bg-gray-50 border border-dashed border-gray-400 rounded-lg h-full cursor-pointer hover:bg-gray-100 transition"
+                        id="upload-label">
+                        <i id="icon-upload"
+                            class="fas fa-plus text-4xl w-24 h-24 flex items-center justify-center text-gray-400 border border-dashed border-gray-400 rounded"></i>
+                        <span id="drop-instruction" class="text-gray-500 text-center text-lg">Seret dan lepas gambar di sini
+                            atau klik untuk memilih file</span>
+                    </label>
+                    <input type="file" id="file-input" name="image" accept="image/*"
+                        class="hidden @error('image') is-invalid @enderror">
+                    <div id="file-name" class="mt-2 text-gray-600 text-center hidden"></div>
+                    <!-- Tombol Reset Gambar -->
+                    <button id="reset-button"
+                        class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-yellow-600 transition hidden">
+                        <i class="fas fa-times text-xl text-white"></i>
+                    </button>
+                    @error('image')
+                        <div class="text-red-500 mt-2">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <!-- Nama Produk -->
-                <div class="mb-4">
-                    <label for="name" class="block text-sm font-semibold text-gray-700 mb-1">Nama Produk</label>
+                <div class="flex items-center gap-8">
+                    <label for="name" class="block text-sm font-semibold text-gray-700 mb-1 w-[10%]">Nama Produk</label>
                     <input type="text" id="name" name="name" value="{{ old('name') }}"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('name') border-red-500 @enderror"
+                        class="flex-grow px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('name') border-red-500 @enderror"
                         required>
                     @error('name')
                         <div class="text-red-500 mt-2">{{ $message }}</div>
@@ -55,7 +55,7 @@
                 </div>
 
                 <!-- Deskripsi Produk -->
-                <div class="mb-4">
+                <div>
                     <label for="description" class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi Produk</label>
                     <textarea id="description" name="description" rows="4"
                         class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('description') border-red-500 @enderror"
@@ -66,10 +66,11 @@
                 </div>
 
                 <!-- Harga Produk -->
-                <div class="mb-4">
-                    <label for="price" class="block text-sm font-semibold text-gray-700 mb-1">Harga Produk</label>
-                    <input type="number" step="1000" min="0" id="price" name="price" value="{{ old('price') }}"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('price') border-red-500 @enderror"
+                <div class="flex items-center gap-8"">
+                    <label for="price" class="block text-sm font-semibold text-gray-700 mb-1 w-[10%]">Harga Produk</label>
+                    <input type="number" step="1000" min="0" id="price" name="price"
+                        value="{{ old('price') }}"
+                        class="flex-grow px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('price') border-red-500 @enderror"
                         required>
                     @error('price')
                         <div class="text-red-500 mt-2">{{ $message }}</div>
@@ -77,10 +78,10 @@
                 </div>
 
                 <!-- Stok Produk -->
-                <div class="mb-4">
-                    <label for="stock" class="block text-sm font-semibold text-gray-700 mb-1">Stok Produk</label>
+                <div class="flex items-center gap-8"">
+                    <label for="stock" class="block text-sm font-semibold text-gray-700 mb-1 w-[10%]">Stok Produk</label>
                     <input type="number" id="stock" min="0" name="stock" value="{{ old('stock') }}"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('stock') border-red-500 @enderror"
+                        class="flex-grow px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('stock') border-red-500 @enderror"
                         required>
                     @error('stock')
                         <div class="text-red-500 mt-2">{{ $message }}</div>
@@ -88,10 +89,10 @@
                 </div>
 
                 <!-- Kategori Produk -->
-                <div class="mb-4">
-                    <label for="category_id" class="block text-sm font-semibold text-gray-700 mb-1">Kategori</label>
+                <div class="flex items-center gap-8"">
+                    <label for="category_id" class="block text-sm font-semibold text-gray-700 mb-1 w-[10%]">Kategori</label>
                     <select id="category_id" name="category_id"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('category_id') border-red-500 @enderror"
+                        class="flex-grow px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('category_id') border-red-500 @enderror"
                         required>
                         <option value="" disabled selected>Pilih Kategori</option>
                         @foreach ($categories as $category)
@@ -107,13 +108,13 @@
                 </div>
 
                 <!-- Tombol Simpan -->
-                <div class="flex justify-between mt-4">
+                <div class="flex justify-between">
                     <button type="submit" title="Simpan"
-                        class="w-[64px] bg-x-yellow text-white py-3 rounded-lg hover:bg-opacity-80 transition w-24">
+                        class="w-[64px] bg-blue-500 text-white py-3 rounded-full hover:bg-blue-600 transition w-24">
                         <i class="fas fa-save"></i>
                     </button>
                     <button type="reset" title="Reset"
-                        class="w-[64px] bg-x-red text-white py-3 rounded-lg hover:bg-opacity-80 transition w-24">
+                        class="w-[64px] bg-red-500 text-white py-3 rounded-full hover:bg-red-600 transition w-24">
                         <i class="fas fa-undo"></i>
                     </button>
                 </div>
