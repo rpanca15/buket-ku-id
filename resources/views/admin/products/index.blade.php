@@ -36,21 +36,27 @@
                             <td class="border-b p-4">{{ $product->category->name ?? '-' }}</td>
                             <td class="border-b p-4">Rp{{ number_format($product->price, 2, ',', '.') }}</td>
                             <td class="border-b p-4">{{ $product->description }}</td>
-                            <td class="border-b p-4 text-center flex items-center justify-center gap-2">
-                                <a href="{{ route('products.edit', $product->id) }}"
-                                    class="bg-x-yellow text-white px-3 py-2 rounded-full hover:bg-yellow-600 transition">
-                                    <i class="fas fa-pencil"></i>
-                                </a>
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST"
-                                    class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')"
-                                        class="bg-x-red text-white px-3 py-2 rounded-full hover:bg-red-600 transition">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                            <td class="border-b p-4">
+                                <div class="w-full flex items-center justify-center gap-4">
+                                    <a href="{{ route('products.show', $product->id) }}"
+                                        class="text-blue-500 hover:text-blue-600 transition">
+                                        <i class="fas fa-eye text-xl"></i>
+                                    </a>
+                                    <a href="{{ route('products.edit', $product->id) }}"
+                                        class="text-x-yellow hover:text-yellow-600 transition">
+                                        <i class="fas fa-pencil text-xl"></i>
+                                    </a>
+                                    <form action="{{ route('products.destroy', $product->id) }}" method="POST"
+                                        class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')"
+                                            class="text-x-red hover:text-red-600 transition">
+                                            <i class="fas fa-trash text-xl"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty

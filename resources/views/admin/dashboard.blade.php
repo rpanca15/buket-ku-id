@@ -32,65 +32,36 @@
         </div>
 
         <!-- Tabel Recent Orders -->
-        <div class="mt-8 p-4 bg-white shadow rounded-lg max-h-[calc(100vh-300px)] flex flex-col">
+        <div class="mt-8 p-4 bg-white shadow rounded-lg min-h-[calc(100vh-300px)] flex flex-col gap-4">
             <h2 class="text-2xl text-[#2B3674] font-bold">Recent Orders</h2>
-            <div class="max-h-[calc(100vh-300px)] overflow-auto">
-                <table class="min-w-full mt-4 bg-white">
-                    <thead>
-                        <tr class="border-y-2">
-                            <th class="p-4 text-left">Order ID</th>
-                            <th class="p-4 text-left">Customer</th>
-                            <th class="p-4 text-left">Total</th>
-                            <th class="p-4 text-left">Status Pesanan</th>
-                            <th class="p-4 text-left">Action</th>
+            <div class="overflow-hidden">
+                <table class="min-w-full bg-white table-fixed">
+                    <thead class="border-y-2">
+                        <tr>
+                            <th class="p-4 text-left w-1/5">Order ID</th>
+                            <th class="p-4 text-left w-1/5">Customer</th>
+                            <th class="p-4 text-left w-1/5">Total</th>
+                            <th class="p-4 text-left w-1/5">Status Pesanan</th>
+                            <th class="p-4 text-left w-[80px]">Action</th>
                         </tr>
                     </thead>
-                    <div class="max-h-[calc(100vh-300px)] overflow-auto">
+                </table>
+                <div class="overflow-y-auto max-h-[calc(100vh-400px)]">
+                    <table class="min-w-full bg-white table-fixed">
                         <tbody>
                             <tr>
-                                <td class="text-[#2B3674] p-4 font-semibold">1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">User 1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">Rp. 100.000</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">Pending</td>
-                                <td class="p-4">
+                                <td class="text-[#2B3674] p-4 font-semibold w-1/5">1</td>
+                                <td class="text-[#2B3674] p-4 font-semibold w-1/5">User 1</td>
+                                <td class="text-[#2B3674] p-4 font-semibold w-1/5">Rp. 100.000</td>
+                                <td class="text-[#2B3674] p-4 font-semibold w-1/5">Pending</td>
+                                <td class="p-4 w-[80px]">
                                     <a href="#"
                                         class="text-[#2B3674] font-semibold hover:underline hover:text-blue-600">Detail</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="text-[#2B3674] p-4 font-semibold">1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">User 1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">Rp. 100.000</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">Pending</td>
-                                <td class="p-4">
-                                    <a href="#"
-                                        class="text-[#2B3674] font-semibold hover:underline hover:text-blue-600">Detail</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-[#2B3674] p-4 font-semibold">1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">User 1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">Rp. 100.000</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">Pending</td>
-                                <td class="p-4">
-                                    <a href="#"
-                                        class="text-[#2B3674] font-semibold hover:underline hover:text-blue-600">Detail</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-[#2B3674] p-4 font-semibold">1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">User 1</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">Rp. 100.000</td>
-                                <td class="text-[#2B3674] p-4 font-semibold">Pending</td>
-                                <td class="p-4">
-                                    <a href="#"
-                                        class="text-[#2B3674] font-semibold hover:underline hover:text-blue-600">Detail</a>
-                                </td>
-                            </tr>
-                            <!-- Add more rows here -->
                         </tbody>
-                    </div>
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
