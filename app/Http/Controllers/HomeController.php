@@ -10,6 +10,6 @@ class HomeController extends Controller
     public function index()
     {
         $products = Product::with('category')->get();
-        return view('index', compact('products')); // Jika user atau guest
+        return view('home', compact('products')); // Jika user atau guest
     }
 }
