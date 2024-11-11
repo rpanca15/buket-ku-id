@@ -9,8 +9,8 @@
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">Product</h1>
             <a href="{{ route('products.create') }}"
-                class="flex items-center bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition">
-                <i class="fas fa-plus text-xl mr-1"></i>&nbsp;Tambah
+                class="flex items-center bg-x-purple text-white px-4 py-2 rounded-full hover:bg-purple-500 transition ease-in-out duration-300">
+                <i class="fas fa-plus text-xl mr-1"></i>&nbsp;Add
             </a>
         </div>
 

@@ -8,7 +8,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 
-Route::resource('/', HomeController::class);
+Route::get('/',[ HomeController::class, 'index'])->name('home');
 
 // Route untuk login dan register
 Route::middleware(['guest'])->group(function () {

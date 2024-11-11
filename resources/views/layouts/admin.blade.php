@@ -6,30 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
     @vite('resources/css/app.css')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Style for the active menu item */
-        .active {
-            background-color: white;
-            color: #6B46C1;
-            /* purple-600 */
-        }
-    </style>
-    <script>
-        // Get all the menu links
-        const menuLinks = document.querySelectorAll('aside nav ul li a');
-
-        // Add click event to each link
-        menuLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Remove 'active' class from all links
-                menuLinks.forEach(link => link.classList.remove('active'));
-
-                // Add 'active' class to the clicked link
-                this.classList.add('active');
-            });
-        });
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body class="bg-gray-100">
@@ -37,7 +16,9 @@
         <!-- Sidebar -->
         <aside class="relative w-64 bg-x-purple text-white shadow-lg h-full flex flex-col gap-8 justify-between">
             <div>
-                <img src="{{ asset('assets/images/logotrans.png') }}" alt="Logo Buket_ku.id" class="w-full h-auto">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo Buket_ku.id" class="w-full h-auto">
+                </a>
             </div>
 
             <nav class="flex-grow flex items-start justify-center">
@@ -72,10 +53,10 @@
                     </li>
                 </ul>
             </nav>
-            <form action="{{ route('logout') }}" method="POST" class="inline">
+            <form action="{{ route('logout') }}" method="POST" class="flex items-center justify-center p-2">
                 @csrf
                 <button type="submit"
-                    class="flex items-center font-bold justify-center py-3 px-4 text-white bg-x-red hover:bg-red-600 transition-colors duration-300 ease-in-out w-full">
+                    class="flex items-center font-bold justify-center py-3 px-4 text-white hover:bg-x-red transition-colors duration-300 ease-in-out w-full  rounded-lg">
                     <i class="fas fa-sign-out-alt"></i>
                     <span class="ml-2">Logout</span>
                 </button>

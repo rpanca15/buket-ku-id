@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Home | <Buket_ku class="id"></Buket_ku>
+    Home | Buket_ku.id
 @endsection
 
 @section('content')
