@@ -13,38 +13,28 @@ class Order extends Model
         'user_id',
         'total',
         'status_id',
-        'product_count', // Menambahkan kolom jumlah produk
-        'cod_date', // Tanggal COD
-        'cod_location', // Lokasi COD
+        'product_count',
+        'cod_date',
+        'cod_location',
     ];
 
-    /**
-     * Relasi ke model User.
-     */
+    protected $with = ['details', 'status'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Relasi ke model OrderDetail.
-     */
     public function details()
     {
         return $this->hasMany(OrderDetail::class);
     }
 
-    /**
-     * Relasi ke model OrderStatus.
-     */
     public function status()
     {
         return $this->belongsTo(OrderStatus::class, 'status_id');
     }
 
-    /**
-     * Accessor untuk mendapatkan nama status pesanan.
-     */
     public function getStatusNameAttribute()
     {
         return $this->status ? $this->status->status : 'Unknown';

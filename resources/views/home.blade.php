@@ -75,19 +75,19 @@
         </section>
 
         <!-- New Arrivals -->
-        <section class="mt-60 w-full max-w-[1305px] max-md:mt-10 max-md:max-w-full">
+        <section class="mt-60 w-full px-10 max-md:mt-10 max-md:max-w-full">
             <h2 class="self-center text-5xl font-bold text-center text-violet-900 max-md:text-4xl -mb-10">NEW ARRIVALS</h2>
             <div class="flex gap-12 max-md:flex-col">
                 <div class="flex flex-col w-[24%] max-md:ml-0 max-md:w-full">
-                    <div class="flex flex-col mt-32 w-full max-md:mt-10">
-                        <div class="flex flex-col pl-1.5">
+                    <div class="flex flex-col mt-32 items-center justify-center w-full max-md:mt-10">
+                        <div class="flex flex-col">
                             <div class="flex overflow-hidden flex-col items-center rounded-3xl aspect-square bg-zinc-100">
                                 <img loading="lazy" src="{{ asset('assets/images/image 10.png') }}" alt="Buket Kupu LED"
                                     class="object-contain w-full aspect-[0.99]" />
                             </div>
                             <h3 class="self-start mt-10 text-xl font-bold text-black">Buket Kupu LED</h3>
                         </div>
-                        <p class="gap-2.5 self-start mt-10 text-2xl font-bold text-violet-900">Rp 50.000</p>
+                        <p class="self-start mt-10 text-2xl font-bold text-violet-900">Rp 50.000</p>
                     </div>
                 </div>
                 <div class="flex flex-col w-[24%] max-md:ml-0 max-md:w-full">
@@ -99,7 +99,7 @@
                             </div>
                             <h3 class="self-start mt-10 text-xl font-bold text-black">Buket Bunga Artificial</h3>
                         </div>
-                        <p class="gap-2.5 self-start mt-10 text-2xl font-bold text-violet-900">Rp 50.000</p>
+                        <p class="self-start mt-10 text-2xl font-bold text-violet-900">Rp 50.000</p>
                     </div>
                 </div>
                 <div class="flex flex-col w-[24%] max-md:ml-0 max-md:w-full">
@@ -111,7 +111,7 @@
                             </div>
                             <h3 class="self-start mt-10 text-xl font-bold text-black">Buket Boneka Wisuda</h3>
                         </div>
-                        <p class="gap-2.5 self-start mt-10 text-2xl font-bold text-violet-900">Rp 50.000</p>
+                        <p class="self-start mt-10 text-2xl font-bold text-violet-900">Rp 50.000</p>
                     </div>
                 </div>
                 <div class="flex flex-col w-[24%] max-md:ml-0 max-md:w-full">
@@ -123,7 +123,7 @@
                             </div>
                             <h3 class="self-start mt-10 text-xl font-bold text-black">Buket Snack Topper Wisuda</h3>
                         </div>
-                        <p class="gap-2.5 self-start mt-10 text-2xl font-bold text-violet-900">Rp 50.000</p>
+                        <p class="self-start mt-10 text-2xl font-bold text-violet-900">Rp 50.000</p>
                     </div>
                 </div>
             </div>

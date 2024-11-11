@@ -8,9 +8,12 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 
-Route::get('/',[ HomeController::class, 'index'])->name('home');
+// Halaman beranda dan produk, bisa diakses oleh semua pengguna (guest dan user)
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-// Route untuk login dan register
+// Rute untuk login dan register hanya untuk guest (belum login)
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -18,23 +21,23 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
+// Rute untuk logout hanya untuk pengguna yang sudah login (auth)
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 // Rute untuk user terautentikasi yang bisa membuat order
-Route::middleware(['role:user'])->group(function () {
+Route::group(['middleware' => ['role:user']], function() {
+    // Order hanya bisa diakses oleh user yang sudah login
     Route::resource('/orders', OrderController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
 });
 
-// Rute untuk guest dan user: Melihat daftar produk
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-
 // Rute untuk admin dengan akses penuh
-Route::middleware(['role:admin'])->group(function () {
+Route::group(['middleware' => ['role:admin']], function() {
+    // Dashboard untuk admin
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
 
+    // Rute untuk mengelola produk
     Route::resource('/admin/products', ProductController::class)
         ->names([
             'index' => 'products.index',
@@ -46,6 +49,7 @@ Route::middleware(['role:admin'])->group(function () {
             'destroy' => 'products.destroy',
         ]);
 
+    // Rute untuk mengelola kategori produk
     Route::resource('/admin/categories', CategoryController::class)
         ->names([
             'index' => 'categories.index',
@@ -57,6 +61,7 @@ Route::middleware(['role:admin'])->group(function () {
             'destroy' => 'categories.destroy',
         ]);
 
+    // Rute untuk mengelola pesanan (order) admin
     Route::resource('/admin/orders', OrderController::class)
         ->names([
             'index' => 'orders.index',
