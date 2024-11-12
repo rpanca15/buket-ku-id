@@ -49,7 +49,7 @@
                 <div class="overflow-y-auto max-h-[calc(100vh-400px)]">
                     <table class="min-w-full bg-white table-fixed">
                         <tbody>
-                            @foreach ($recentOrders as $order)
+                            @forelse ($recentOrders as $order)
                                 <tr>
                                     <td class="text-[#2B3674] p-4 font-semibold w-1/5">{{ $order->id }}</td>
                                     <td class="text-[#2B3674] p-4 font-semibold w-1/5">{{ $order->user->name ?? 'Unknown' }}</td>
@@ -60,7 +60,11 @@
                                             class="text-[#2B3674] font-semibold hover:underline hover:text-blue-600">Detail</a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center p-4">Tidak ada pemesanan</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

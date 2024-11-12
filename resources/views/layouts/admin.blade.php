@@ -25,30 +25,30 @@
                 <ul class="space-y-1 w-full">
                     <li>
                         <a href="{{ route('admin') }}"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-tachometer-alt"></i> <!-- Dashboard Icon -->
                             <span class="ml-2">Dashboard</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('products.index') }}"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-box"></i> <!-- Products Icon -->
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
+                            <i class="fas fa-box mr-1"></i> <!-- Products Icon -->
                             <span class="ml-2">Products</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('orders.index') }}"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-shopping-cart"></i> <!-- Orders Icon -->
                             <span class="ml-2">Orders</span>
                         </a>
                     </li>
                     <li>
                         <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-paint-brush"></i> <!-- Custom Orders Icon -->
-                            <span class="ml-2">Custom Orders</span>
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
+                            <i class="fas fa-users"></i> <!-- Custom Orders Icon -->
+                            <span class="ml-2">Customers</span>
                         </a>
                     </li>
                 </ul>
