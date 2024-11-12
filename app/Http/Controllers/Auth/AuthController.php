@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -26,16 +27,15 @@ class AuthController extends Controller
         // Validasi input
         $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|string|min:8',
         ]);
 
         // Proses login
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            Cache::put('success', 'Login berhasil! Selamat datang!', now()->addSeconds(5));
             return redirect()->intended('/');
         }
-
-        // Jika gagal login
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ])->withInput();
@@ -68,12 +68,14 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'no_telepon' => $request->no_telepon, // Menyimpan nomor telepon
+            'role' => 'user',
         ]);
 
         // Login otomatis setelah registrasi
         Auth::login($user);
 
-        return redirect('/')->with('success', 'Registrasi berhasil! Selamat datang!');
+        Cache::put('success', 'Registrasi berhasil! Selamat datang!', now()->addSeconds(5));
+        return redirect('/');
     }
 
     /**
@@ -84,6 +86,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        Cache::put('success', 'Berhasil keluar!', now()->addSeconds(5));
         return redirect('/');
     }
 }

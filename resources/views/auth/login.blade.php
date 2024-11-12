@@ -37,23 +37,55 @@
             <h2 class="text-2xl font-bold mb-2 text-blue-900">Sign in</h2>
             <p class="text-gray-600 mb-6">We need you to help us with some basic information to create your account</p>
 
+            <!-- Display Success Message -->
+            @if (Cache::has('success'))
+                <div id="success-modal" class="fixed inset-0 z-50 flex justify-center items-center bg-gray-900 bg-opacity-50">
+                    <div class="bg-white rounded-lg p-6 w-1/3">
+                        <h3 class="text-lg font-semibold text-green-600">Success</h3>
+                        <p class="text-gray-700 mt-2">{{ Cache::get('success') }}</p>
+                        <div class="mt-4 flex justify-end">
+                            <button onclick="closeModal('success-modal')" class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        closeModal('success-modal');
+                    }, 3000); // Modal will close after 3 seconds
+
+                    function closeModal(modalId) {
+                        document.getElementById(modalId).style.display = 'none';
+                    }
+                </script>
+            @endif
+
+            <!-- Display Error Messages -->
+            @if ($errors->any())
+                <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-4">
                 @csrf
 
                 <!-- Email Input -->
                 <div>
                     <label class="block text-gray-700 mb-2" for="email">Email</label>
-                    <input class="w-full px-3 py-2 border rounded-lg" id="email" name="email" type="text"
-                        required />
+                    <input class="w-full px-3 py-2 border rounded-lg" id="email" name="email" type="text" value="{{ old('email') }}" required />
                 </div>
 
                 <!-- Password Input with Toggle -->
                 <div class="relative">
                     <label class="block text-gray-700 mb-2" for="password">Password</label>
-                    <input class="w-full px-3 py-2 border rounded-lg pr-10" id="password" name="password"
-                        type="password" required value="********" />
-                    <i class="fas fa-eye absolute right-3 top-11 text-gray-500 cursor-pointer" id="eye-icon"
-                        onclick="togglePassword()"></i>
+                    <input class="w-full px-3 py-2 border rounded-lg pr-10 @error('password') border-red-500 @enderror" id="password" name="password" type="password" value="{{ old('password') }}" required />
+                    <i class="fas fa-eye absolute right-3 top-11 text-gray-500 cursor-pointer" id="eye-icon" onclick="togglePassword()"></i>
                 </div>
 
                 <div class="flex justify-end items-center">

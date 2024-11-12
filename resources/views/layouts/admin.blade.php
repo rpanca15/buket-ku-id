@@ -9,9 +9,95 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Menyembunyikan modal dengan animasi */
+        @keyframes closeModalAnimation {
+            0% {
+                transform: translateZ(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateZ(-1000px);
+                opacity: 0;
+            }
+        }
+
+        .modal {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .modal-close {
+            animation: closeModalAnimation 0.3s forwards;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100">
+    @if (Cache::has('success'))
+        <!-- Modal untuk pesan sukses -->
+        <div id="success-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
+            <div class="bg-white rounded-lg p-6 w-1/3 shadow-lg modal">
+                <h3 class="text-lg font-semibold text-green-600">Success</h3>
+                <p class="text-gray-700 mt-2">{{ Cache::get('success') }}</p>
+                {{-- <div class="mt-4 flex justify-end">
+                    <button onclick="closeModal('success-modal')"
+                        class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600">
+                        Close
+                    </button>
+                </div> --}}
+            </div>
+        </div>
+
+        <script>
+            setTimeout(function() {
+                closeModal('success-modal');
+            }, 1500);
+
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+
+                modal.querySelector('.modal').classList.add('modal-close');
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.querySelector('.modal').classList.remove('modal-close');
+                }, 300);
+            }
+        </script>
+    @elseif (Cache::has('error'))
+        <!-- Modal untuk pesan error -->
+        <div id="error-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
+            <div class="bg-white rounded-lg p-6 w-1/3 shadow-lg modal">
+                <h3 class="text-lg font-semibold text-red-600">Error</h3>
+                <p class="text-gray-700 mt-2">{{ Cache::get('error') }}</p>
+                {{-- <div class="mt-4 flex justify-end">
+                    <button onclick="closeModal('error-modal')"
+                        class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600">
+                        Close
+                    </button>
+                </div> --}}
+            </div>
+        </div>
+
+        <script>
+            setTimeout(function() {
+                closeModal('error-modal');
+            }, 1500);
+
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+
+                modal.querySelector('.modal').classList.add('modal-close');
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.querySelector('.modal').classList.remove('modal-close');
+                }, 300);
+            }
+        </script>
+    @endif
+
     <div class="flex h-screen">
         <!-- Sidebar -->
         <aside class="relative w-64 bg-x-purple text-white shadow-lg h-full flex flex-col gap-8 justify-between">
@@ -69,26 +155,6 @@
         </main>
     </div>
     @yield('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        @if (Cache::has('success'))
-            Swal.fire({
-                icon: "success",
-                title: "BERHASIL",
-                text: "{{ Cache::get('success') }}",
-                showConfirmButton: false,
-                timer: 2000
-            });
-        @elseif (Cache::has('error'))
-            Swal.fire({
-                icon: "error",
-                title: "GAGAL!",
-                text: "{{ Cache::get('error') }}",
-                showConfirmButton: false,
-                timer: 2000
-            });
-        @endif
-    </script>
 
     @vite('resources/js/app.js')
 </body>
