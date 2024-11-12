@@ -69,6 +69,26 @@
         </main>
     </div>
     @yield('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (Cache::has('success'))
+            Swal.fire({
+                icon: "success",
+                title: "BERHASIL",
+                text: "{{ Cache::get('success') }}",
+                showConfirmButton: false,
+                timer: 2000
+            });
+        @elseif (Cache::has('error'))
+            Swal.fire({
+                icon: "error",
+                title: "GAGAL!",
+                text: "{{ Cache::get('error') }}",
+                showConfirmButton: false,
+                timer: 2000
+            });
+        @endif
+    </script>
 
     @vite('resources/js/app.js')
 </body>

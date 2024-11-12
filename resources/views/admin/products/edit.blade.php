@@ -5,12 +5,14 @@
 @endsection
 
 @section('content')
-    <div class="container mx-auto p-4 relative">
-        <a href="{{ route('products.index') }}" title="Kembali ke Daftar Produk"
-            class="text-black-700 group rounded-lg absolute top-4 left-4">
-            <i class="fas fa-arrow-left text-xl group-hover:opacity-60"></i>
-        </a>
-        <h1 class="text-3xl font-bold mb-6 text-center">Edit Produk</h1>
+    <div class="container mx-auto px-6 py-4 max-w-screen max-h-screen overflow-y-auto">
+        <div class="min-w-full relative">
+            <a href="javascript:history.back()" title="Kembali"
+                class="text-black-700 group rounded-lg absolute top-2">
+                <i class="fas fa-arrow-left text-xl group-hover:opacity-60"></i>
+            </a>
+            <h1 class="text-3xl font-bold mb-6 text-center">Edit Produk</h1>
+        </div>
         <form id="product-form" class="flex flex-wrap gap-4" action="{{ route('products.update', $product->id) }}"
             method="POST" enctype="multipart/form-data">
             @csrf
