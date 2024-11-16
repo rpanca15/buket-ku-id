@@ -4,105 +4,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>@yield('title')</title>
     @vite('resources/css/app.css')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Style for the active menu item */
-        .active {
-            background-color: white;
-            color: #6B46C1; /* purple-600 */
+        /* Menyembunyikan modal dengan animasi */
+        @keyframes closeModalAnimation {
+            0% {
+                transform: translateZ(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateZ(-1000px);
+                opacity: 0;
+            }
+        }
+
+        .modal {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .modal-close {
+            animation: closeModalAnimation 0.3s forwards;
         }
     </style>
-    <script>
-        // Get all the menu links
-        const menuLinks = document.querySelectorAll('aside nav ul li a');
-    
-        // Add click event to each link
-        menuLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
-                // Remove 'active' class from all links
-                menuLinks.forEach(link => link.classList.remove('active'));
-    
-                // Add 'active' class to the clicked link
-                this.classList.add('active');
-            });
-        });
-    </script>        
 </head>
 
 <body class="bg-gray-100">
+    @if (Cache::has('success'))
+        <!-- Modal untuk pesan sukses -->
+        <div id="success-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
+            <div class="bg-white rounded-lg p-6 w-1/3 shadow-lg modal">
+                <h3 class="text-lg font-semibold text-green-600">Success</h3>
+                <p class="text-gray-700 mt-2">{{ Cache::get('success') }}</p>
+                {{-- <div class="mt-4 flex justify-end">
+                    <button onclick="closeModal('success-modal')"
+                        class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600">
+                        Close
+                    </button>
+                </div> --}}
+            </div>
+        </div>
+
+        <script>
+            setTimeout(function() {
+                closeModal('success-modal');
+            }, 1500);
+
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+
+                modal.querySelector('.modal').classList.add('modal-close');
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.querySelector('.modal').classList.remove('modal-close');
+                }, 300);
+            }
+        </script>
+    @elseif (Cache::has('error'))
+        <!-- Modal untuk pesan error -->
+        <div id="error-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
+            <div class="bg-white rounded-lg p-6 w-1/3 shadow-lg modal">
+                <h3 class="text-lg font-semibold text-red-600">Error</h3>
+                <p class="text-gray-700 mt-2">{{ Cache::get('error') }}</p>
+                {{-- <div class="mt-4 flex justify-end">
+                    <button onclick="closeModal('error-modal')"
+                        class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600">
+                        Close
+                    </button>
+                </div> --}}
+            </div>
+        </div>
+
+        <script>
+            setTimeout(function() {
+                closeModal('error-modal');
+            }, 1500);
+
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+
+                modal.querySelector('.modal').classList.add('modal-close');
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.querySelector('.modal').classList.remove('modal-close');
+                }, 300);
+            }
+        </script>
+    @endif
+
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="relative w-64 bg-purple-600 text-white shadow-lg h-full flex flex-col justify-between">
-            <div class="py-6 px-6">
-                <img src="{{ asset('images/logotrans.png') }}" alt="Logo Buket_ku.id">
+        <aside class="relative w-64 bg-x-purple text-white shadow-lg h-full flex flex-col gap-8 justify-between">
+            <div>
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo Buket_ku.id" class="w-full h-auto">
+                </a>
             </div>
-            <nav class="flex-grow flex items-center justify-center">
+
+            <nav class="flex-grow flex items-start justify-center">
                 <ul class="space-y-1 w-full">
                     <li>
-                        <a href="/admin"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
+                        <a href="{{ route('admin') }}"
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-tachometer-alt"></i> <!-- Dashboard Icon -->
                             <span class="ml-2">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-list-alt"></i> <!-- Categories Icon -->
-                            <span class="ml-2">Categories</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/admin/products"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-box"></i> <!-- Products Icon -->
+                        <a href="{{ route('products.index') }}"
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
+                            <i class="fas fa-box mr-1"></i> <!-- Products Icon -->
                             <span class="ml-2">Products</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
+                        <a href="{{ route('orders.index') }}"
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-shopping-cart"></i> <!-- Orders Icon -->
                             <span class="ml-2">Orders</span>
                         </a>
                     </li>
                     <li>
                         <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-paint-brush"></i> <!-- Custom Orders Icon -->
-                            <span class="ml-2">Custom Orders</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-credit-card"></i> <!-- Payments Icon -->
-                            <span class="ml-2">Payments</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-purple-600 transition-colors duration-300 ease-in-out">
-                            <i class="fas fa-star"></i> <!-- Reviews Icon -->
-                            <span class="ml-2">Reviews</span>
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
+                            <i class="fas fa-users"></i> <!-- Custom Orders Icon -->
+                            <span class="ml-2">Customers</span>
                         </a>
                     </li>
                 </ul>
             </nav>
-            <a href="#"
-                class="flex items-center font-bold justify-center py-3 px-4 text-white bg-red-500 hover:bg-red-600 transition-colors duration-300 ease-in-out">
-                <i class="fas fa-sign-out-alt"></i> <!-- Logout Icon -->
-                <span class="ml-2">Logout</span>
-            </a>
+            <form action="{{ route('logout') }}" method="POST" class="flex items-center justify-center p-2">
+                @csrf
+                <button type="submit"
+                    class="flex items-center font-bold justify-center py-3 px-4 text-white hover:bg-x-red transition-colors duration-300 ease-in-out w-full  rounded-lg">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="ml-2">Logout</span>
+                </button>
+            </form>
         </aside>
 
         <!-- Main content -->
-        <main class="flex-1 p-6 h-full overflow-auto bg-white">
+        <main class="flex-1 h-full overflow-auto bg-x-grey">
             @yield('content')
         </main>
     </div>
+    @yield('scripts')
 
     @vite('resources/js/app.js')
 </body>

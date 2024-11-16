@@ -12,21 +12,31 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'total',
-        'status_id' // Ganti status menjadi status_id
+        'status_id',
+        'product_count',
+        'cod_date',
+        'cod_location',
     ];
+
+    protected $with = ['details', 'status'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function orderDetails()
+    public function details()
     {
         return $this->hasMany(OrderDetail::class);
     }
 
     public function status()
     {
-        return $this->belongsTo(OrderStatus::class, 'status_id'); // Relasi ke tabel orders_status
+        return $this->belongsTo(OrderStatus::class, 'status_id');
+    }
+
+    public function getStatusNameAttribute()
+    {
+        return $this->status ? $this->status->status : 'Unknown';
     }
 }

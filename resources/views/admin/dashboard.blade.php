@@ -1,59 +1,74 @@
 @extends('layouts.admin')
 
-@section('content')
-<div class="p-6">
-    <h1 class="text-2xl font-bold">Dashboard Admin</h1>
-    <p class="mt-2 text-gray-600">Selamat datang di dashboard admin! Di sini Anda bisa mengelola semua aspek dari pemesanan buket.</p>
+@section('title')
+    Dashboard | Buket_ku.id
+@endsection
 
-    <div class="mt-4">
-        <h2 class="text-xl font-semibold">Statistik Pesanan</h2>
-        <div class="grid grid-cols-3 gap-4 mt-4">
-            <div class="bg-white p-4 shadow rounded">
-                <h3 class="text-lg font-medium">Total Pesanan</h3>
-                <p class="text-2xl">100</p>
+@section('content')
+    <div class="container mx-auto px-6 py-4 flex flex-col h-screen">
+        <div>
+            <h1 class="text-4xl font-bold">Dashboard Admin</h1>
+            <p class="mt-2 text-[#909193] text-[16px]">Selamat datang di dashboard admin! Di sini Anda bisa mengelola semua
+                aspek dari pemesanan buket.</p>
+        </div>
+
+        <!-- Statistik -->
+        <div class="mt-4">
+            <h2 class="text-xl font-bold">Statistik Pesanan</h2>
+            <div class="grid grid-cols-3 gap-4 mt-4">
+                <div class="bg-white p-4 shadow rounded-lg">
+                    <h3 class="text-lg text-[#7B7F83] text-sm">Total Pesanan</h3>
+                    <p class="text-[28px] text-[#2B3674] font-semibold">{{ $totalOrders }}</p>
+                </div>
+                <div class="bg-white p-4 shadow rounded-lg">
+                    <h3 class="text-lg text-[#7B7F83] text-sm">Pesanan Diproses</h3>
+                    <p class="text-[28px] text-[#2B3674] font-semibold">{{ $processedOrders }}</p>
+                </div>
+                <div class="bg-white p-4 shadow rounded-lg">
+                    <h3 class="text-lg text-[#7B7F83] text-sm">Pesanan Selesai</h3>
+                    <p class="text-[28px] text-[#2B3674] font-semibold">{{ $completedOrders }}</p>
+                </div>
             </div>
-            <div class="bg-white p-4 shadow rounded">
-                <h3 class="text-lg font-medium">Pesanan Diproses</h3>
-                <p class="text-2xl">75</p>
-            </div>
-            <div class="bg-white p-4 shadow rounded">
-                <h3 class="text-lg font-medium">Pesanan Selesai</h3>
-                <p class="text-2xl">25</p>
+        </div>
+
+        <!-- Tabel Recent Orders -->
+        <div class="mt-8 p-4 bg-white shadow rounded-lg min-h-[calc(100vh-300px)] flex flex-col gap-4">
+            <h2 class="text-2xl text-[#2B3674] font-bold">Recent Orders</h2>
+            <div class="overflow-hidden">
+                <table class="min-w-full bg-white table-fixed">
+                    <thead class="border-y-2">
+                        <tr>
+                            <th class="p-4 text-left w-1/5">Order ID</th>
+                            <th class="p-4 text-left w-1/5">Customer</th>
+                            <th class="p-4 text-left w-1/5">Total</th>
+                            <th class="p-4 text-left w-1/5">Status Pesanan</th>
+                            <th class="p-4 text-left w-[80px]">Action</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="overflow-y-auto max-h-[calc(100vh-400px)]">
+                    <table class="min-w-full bg-white table-fixed">
+                        <tbody>
+                            @forelse ($recentOrders as $order)
+                                <tr>
+                                    <td class="text-[#2B3674] p-4 font-semibold w-1/5">{{ $order->id }}</td>
+                                    <td class="text-[#2B3674] p-4 font-semibold w-1/5">{{ $order->user->name ?? 'Unknown' }}</td>
+                                    <td class="text-[#2B3674] p-4 font-semibold w-1/5">Rp. {{ number_format($order->total) }}</td>
+                                    <td class="text-[#2B3674] p-4 font-semibold w-1/5">{{ $order->status->status }}</td>
+                                    <td class="p-4 w-[80px]">
+                                        <a href="{{ route('orders.show', $order->id) }}"
+                                            class="text-[#2B3674] font-semibold hover:underline hover:text-blue-600">Detail</a>
+                                    </td>
+                                </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center p-4">Tidak ada pemesanan</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="mt-8">
-        <h2 class="text-xl font-semibold">Recent Orders</h2>
-        <table class="min-w-full mt-4 bg-white border border-gray-200">
-            <thead>
-                <tr>
-                    <th class="border-b-2 border-gray-300 p-4 text-left">#</th>
-                    <th class="border-b-2 border-gray-300 p-4 text-left">User</th>
-                    <th class="border-b-2 border-gray-300 p-4 text-left">Total</th>
-                    <th class="border-b-2 border-gray-300 p-4 text-left">Status</th>
-                    <th class="border-b-2 border-gray-300 p-4 text-left">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Contoh data. Ganti dengan data dinamis dari database -->
-                <tr>
-                    <td class="border-b border-gray-300 p-4">1</td>
-                    <td class="border-b border-gray-300 p-4">User 1</td>
-                    <td class="border-b border-gray-300 p-4">Rp. 100.000</td>
-                    <td class="border-b border-gray-300 p-4">Pending</td>
-                    <td class="border-b border-gray-300 p-4"><a href="#" class="text-blue-600">Detail</a></td>
-                </tr>
-                <tr>
-                    <td class="border-b border-gray-300 p-4">2</td>
-                    <td class="border-b border-gray-300 p-4">User 2</td>
-                    <td class="border-b border-gray-300 p-4">Rp. 200.000</td>
-                    <td class="border-b border-gray-300 p-4">Completed</td>
-                    <td class="border-b border-gray-300 p-4"><a href="#" class="text-blue-600">Detail</a></td>
-                </tr>
-                <!-- Tambahkan data dinamis lainnya di sini -->
-            </tbody>
-        </table>
-    </div>
-</div>
 @endsection
