@@ -1,73 +1,99 @@
-@vite('resources/css/app.css') <!-- Memuat CSS -->
+<html lang="en">
 
-<!-- Tambahkan CDN Font Awesome di bagian <head> atau sebelum penutup </body> -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sign Up</title>
+    @vite('resources/css/app.css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+        function toggleConfPassword() {
+            const passwordField = document.getElementById('password_confirmation');
+            const eyeIcon = document.getElementById('eye-icon-2');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+    </script>
+</head>
 
-
-
-<section class="flex overflow-hidden items-center px-16 py-48 bg-zinc-50 max-md:px-5 max-md:py-24">
-    <!-- Logo di Kiri -->
-    <div class="flex-shrink-0">
-        <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/931f9653ef6fe5c5ff5beb312d56770b9cf8b75ab736e3fcc604349bb172f1fd?placeholderIfAbsent=true&apiKey=d1735fa541f5476b84a6d958e12b16eb" alt="Logo" class="object-contain max-w-full aspect-[1.14] w-[711px]" />
-    </div>
-
-    <!-- Form di Kanan -->
-    <main class="flex flex-col px-8 pt-8 pb-28 mt-0 max-w-full bg-white rounded-3xl border border-solid border-stone-300 min-h-[632px] w-[583px] max-md:px-5 max-md:pb-24 max-md:mt-0">
-        <div class="flex flex-col justify-center items-center w-full">
-            <header class="flex flex-col justify-center w-full">
-                <h1 class="text-5xl font-semibold tracking-tight text-blue-950 max-md:text-4xl">Sign up</h1>
-                <p class="mt-5 text-lg font-medium tracking-normal text-zinc-500 max-md:max-w-full">We need you to help us with some basic information to create your account</p>
-            </header>
-            
-            <form class="flex flex-col mt-8 max-w-full font-medium w-[488px]">
-                <div class="flex flex-col gap-6">
-                    
-                    <!-- Input Nama -->
-                    <div class="flex flex-col">
-                        <label for="name" class="text-xl tracking-normal text-zinc-800">Nama</label>
-                        <input type="text" id="name" name="name" class="px-4 py-2.5 text-base tracking-normal text-left rounded-xl border border-solid border-stone-300" placeholder="Dhewi" aria-label="Enter your name" />
-                    </div>
-
-                    <!-- Input Email -->
-                    <div class="flex flex-col">
-                        <label for="email" class="text-xl tracking-normal text-zinc-800">Email</label>
-                        <input type="email" id="email" name="email" class="px-4 py-2.5 text-base tracking-normal text-left rounded-xl border border-solid border-stone-300" placeholder="Enter your email" aria-label="Enter your email" />
-                    </div>
-
-                    <!-- Input No Telepon -->
-                    <div class="flex flex-col">
-                        <label for="phone" class="text-xl tracking-normal text-zinc-800">No Telepon</label>
-                        <input type="tel" id="phone" name="phone" class="px-4 py-2.5 text-base tracking-normal text-left rounded-xl border border-solid border-stone-300" placeholder="08880000000" aria-label="Enter your phone number" />
-                    </div>
-
-                    <!-- Input Password -->
-                    <div class="flex flex-col">
-                        <label for="password" class="text-xl tracking-normal text-zinc-800">Password</label>
-                        <div class="relative">
-                            <input type="password" id="password" name="password" class="px-4 py-2.5 text-base tracking-normal text-left rounded-xl border border-solid border-stone-300 w-full" placeholder="••••••••••••" aria-label="Enter your password" />
-                            <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <i class="fas fa-eye-slash" id="eye-icon"></i> <!-- Awalnya ikon mata tertutup -->
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <button type="submit" class="mt-8 w-full text-xl font-medium tracking-normal text-white bg-violet-900 rounded-2xl py-3">Sign up</button>
-            </form>
+<body class="bg-gray-100 flex items-center justify-center min-w-full min-h-screen py-4">
+    <div class="flex items-center justify-center w-full max-w-4xl">
+        <div class="w-1/2 flex justify-center">
+            <img alt="Logo 'Buket_ku.id'" class="h-48" height="300" src="{{ asset('assets/images/logo.png') }}" width="300" />
         </div>
-    </main>
-</section>
+        <div class="w-1/2 bg-white p-8 rounded-lg shadow-lg">
+            <header class="flex flex-col justify-center w-full mb-4">
+                <h1 class="text-4xl font-semibold tracking-tight text-blue-950 max-md:text-3xl">Sign up</h1>
+                <p class="mt-5 text-md font-medium tracking-normal text-zinc-500 max-md:max-w-full">We need you to help us with some basic information to create your account</p>
+            </header>
 
+            <form method="POST" action="{{ route('register') }}" class="flex flex-col gap-4 font-medium min-w-full">
+                @csrf
 
-<script>
-    const togglePassword = document.getElementById('toggle-password');
-    const passwordInput = document.getElementById('password');
-    const eyeIcon = document.getElementById('eye-icon');
+                <div>
+                    <label class="block text-gray-700 mb-2" for="name">Nama</label>
+                    <input class="w-full px-3 py-2 border rounded-lg @error('name') border-red-500 @enderror" id="name" name="name" type="text" value="{{ old('name') }}" required />
+                    @error('name')
+                        <div class="text-red-500 mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
 
-    togglePassword.addEventListener('click', function () {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        eyeIcon.classList.toggle('fa-eye');
-        eyeIcon.classList.toggle('fa-eye-slash');
-    });
-</script>
+                <div>
+                    <label class="block text-gray-700 mb-2" for="email">Email</label>
+                    <input class="w-full px-3 py-2 border rounded-lg @error('email') border-red-500 @enderror" id="email" name="email" type="email" value="{{ old('email') }}" required />
+                    @error('email')
+                        <div class="text-red-500 mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 mb-2" for="no_telepon">No Telepon</label>
+                    <input class="w-full px-3 py-2 border rounded-lg @error('no_telepon') border-red-500 @enderror" id="no_telepon" name="no_telepon" type="text" value="{{ old('no_telepon') }}" required />
+                    @error('no_telepon')
+                        <div class="text-red-500 mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="relative">
+                    <label class="block text-gray-700 mb-2" for="password">Password</label>
+                    <input class="w-full px-3 py-2 border rounded-lg @error('password') border-red-500 @enderror" id="password" name="password" type="password" required />
+                    <i id="eye-icon" class="fas fa-eye absolute right-3 top-11 text-gray-500 cursor-pointer" onclick="togglePassword()"></i>
+                    @error('password')
+                        <div class="text-red-500 mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="relative">
+                    <label for="password_confirmation" class="block text-gray-700 mb-2">Konfirmasi Password</label>
+                    <input type="password" name="password_confirmation" id="password_confirmation" required class="w-full px-3 py-2 border rounded-lg" />
+                    <i id="eye-icon-2" class="fas fa-eye absolute right-3 top-11 text-gray-500 cursor-pointer" onclick="toggleConfPassword()"></i>
+                    @error('password_confirmation')
+                        <div class="text-red-500 mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <button class="w-full bg-purple-700 text-white py-2 rounded-lg font-semibold hover:bg-purple-800" type="submit">Sign up</button>
+            </form>
+
+            <p class="text-center text-gray-600 mt-4 font-medium">Already have an account? <a class="text-blue-600 hover:underline" href="{{ route('login') }}">Sign in</a></p>
+        </div>
+    </div>
+</body>
+
+</html>

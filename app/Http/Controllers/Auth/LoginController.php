@@ -5,41 +5,37 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Cache;
 
 class LoginController extends Controller
 {
-    // Menampilkan halaman login
+    /**
+     * Menampilkan form login.
+     */
     public function showLoginForm()
     {
-        return view('auth.login'); // Pastikan untuk mengubah ini sesuai dengan nama view Anda
+        return view('auth.login');
     }
 
-    // Menangani permintaan login
+    /**
+     * Melakukan proses login.
+     */
     public function login(Request $request)
     {
         // Validasi input
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|string|min:8',
         ]);
 
-        // Cek kredensial pengguna
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
-            // Jika berhasil, arahkan ke halaman yang diinginkan
-            return redirect()->intended('/home'); // Ganti '/home' dengan rute yang sesuai
+        // Proses login
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            Cache::put('success', 'Login berhasil! Selamat datang!', now()->addSeconds(5));
+            return redirect()->intended('/');
         }
-
-        // Jika gagal, lemparkan exception
-        throw ValidationException::withMessages([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
-    }
-
-    // Menangani logout
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        return redirect('/'); // Arahkan kembali ke halaman utama atau halaman login
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ])->withInput();
     }
 }

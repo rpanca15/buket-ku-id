@@ -5,52 +5,46 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
     /**
-     * Menampilkan form pendaftaran.
-     *
-     * @return \Illuminate\View\View
+     * Menampilkan form register.
      */
-    public function showRegistrationForm()
+    public function showRegisterForm()
     {
-        return view('auth.register'); // Ganti dengan nama view Anda
+        return view('auth.register');
     }
 
     /**
-     * Menangani pendaftaran pengguna baru.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * Melakukan proses registrasi pengguna baru.
      */
     public function register(Request $request)
     {
-        // Validasi input
-        $validator = Validator::make($request->all(), [
+        // Validasi input registrasi
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|string|max:15',
             'password' => 'required|string|min:8|confirmed',
+            'no_telepon' => 'required|string|max:15|unique:users', // Menambahkan validasi untuk nomor telepon
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        // Simpan pengguna baru
-        User::create([
+        // Membuat pengguna baru
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
             'password' => Hash::make($request->password),
+            'no_telepon' => $request->no_telepon, // Menyimpan nomor telepon
+            'role' => 'user',
         ]);
 
-        // Redirect atau login pengguna setelah pendaftaran
-        return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
+        // Login otomatis setelah registrasi
+        Auth::login($user);
+
+        Cache::put('success', 'Registrasi berhasil! Selamat datang!', now()->addSeconds(5));
+        return redirect('/');
     }
 }

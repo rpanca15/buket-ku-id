@@ -2,43 +2,74 @@
 
 namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+    /**
+     * Menampilkan daftar produk di keranjang.
+     */
     public function index()
     {
-        // Logic to retrieve cart items from the session or database
-        return view('cart'); // Return the cart view
+        $cart = session()->get('cart', []);
+        return view('user.cart.index', compact('cart'));
     }
 
-    public function add(Request $request)
+    /**
+     * Menambahkan produk ke keranjang.
+     */
+    public function add(Request $request, $id)
     {
-        // Logic to add an item to the cart
-        // e.g., session()->push('cart.items', $request->item_id);
-        return redirect()->route('cart.index')->with('success', 'Item added to cart!');
+        $product = Product::findOrFail($id);
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+        } else {
+            $cart[$id] = [
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => 1,
+                'image' => $product->image,
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        return redirect()->route('cart.index')->with('success', 'Produk berhasil ditambahkan ke keranjang.');
     }
 
-    public function remove(Request $request)
+    /**
+     * Menghapus produk dari keranjang.
+     */
+    public function remove($id)
     {
-        // Logic to remove an item from the cart
-        // e.g., session()->forget('cart.items.'.$request->item_id);
-        return redirect()->route('cart.index')->with('success', 'Item removed from cart!');
+        $cart = session()->get('cart', []);
+        
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+        }
+
+        session()->put('cart', $cart);
+
+        return redirect()->route('cart.index')->with('success', 'Produk berhasil dihapus dari keranjang.');
     }
 
-    public function update(Request $request)
+    /**
+     * Mengupdate jumlah produk dalam keranjang.
+     */
+    public function update(Request $request, $id)
     {
-        // Logic to update the item quantity in the cart
-        // e.g., session()->put('cart.items.'.$request->item_id, $request->quantity);
-        return redirect()->route('cart.index')->with('success', 'Cart updated!');
-    }
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] = $request->quantity;
+        }
 
-    public function checkout(Request $request)
-    {
-        // Logic to handle the checkout process
-        // e.g., validate payment and shipping details
-        return redirect()->route('home')->with('success', 'Checkout successful!');
+        session()->put('cart', $cart);
+
+        return redirect()->route('cart.index')->with('success', 'Keranjang berhasil diperbarui.');
     }
 }
