@@ -8,7 +8,11 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CatalogArtificialController;
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderStatusController;
 
 // Halaman beranda dan produk, bisa diakses oleh semua pengguna (guest dan user)
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -28,7 +32,7 @@ Route::prefix('cart')->name('cart.')->group(function () {
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
 // Route untuk menampilkan halaman order status
-Route::get('/order-status', [OrderStatusController::class, 'index'])->name('order_status.index');
+Route::get('/order-status', [OrderStatusController::class, 'index'])->name('order_status');
 // Route untuk menampilkan halaman order status
 Route::get('/catalog-artificial', [CatalogArtificialController::class, 'index'])->name('catalog_artificial.index');
 

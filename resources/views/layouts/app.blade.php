@@ -127,7 +127,7 @@
                         </div>
                     </div>
                 </li>
-                <li><a href="#" class="hover:text-violet-700">Order</a></li>
+                <li><a href="{{ route('order_status') }}" class="hover:text-violet-700">Order</a></li>
                 <li><a href="{{ route('admin') }}" class="hover:text-violet-700">Dashboard</a></li>
             </ul>
 
