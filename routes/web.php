@@ -29,7 +29,7 @@ Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index
 
 // Route untuk menampilkan halaman order status
 Route::get('/order-status', [OrderStatusController::class, 'index'])->name('order_status.index');
-// Route untuk menampilkan halaman katalog buatan (artificial)
+// Route untuk menampilkan halaman order status
 Route::get('/catalog-artificial', [CatalogArtificialController::class, 'index'])->name('catalog_artificial.index');
 
 // Rute untuk login dan register hanya untuk guest (belum login)
