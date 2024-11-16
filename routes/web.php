@@ -15,6 +15,23 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
+// Route untuk halaman cart
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('index'); // View cart
+    Route::post('/add', [CartController::class, 'add'])->name('add'); // Add item to cart
+    Route::post('/remove', [CartController::class, 'remove'])->name('remove'); // Remove item from cart
+    Route::post('/update', [CartController::class, 'update'])->name('update'); // Update item quantity
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout'); // Proceed to checkout
+});
+
+// Route untuk menampilkan halaman katalog
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+
+// Route untuk menampilkan halaman order status
+Route::get('/order-status', [OrderStatusController::class, 'index'])->name('order_status.index');
+// Route untuk menampilkan halaman order status
+Route::get('/catalog-artificial', [CatalogArtificialController::class, 'index'])->name('catalog_artificial.index');
+
 // Rute untuk login dan register hanya untuk guest (belum login)
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -32,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
 Route::group(['middleware' => ['role:user']], function() {
     // Order hanya bisa diakses oleh user yang sudah login
     Route::resource('/orders', OrderController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
+
 });
 
 // Rute untuk admin dengan akses penuh

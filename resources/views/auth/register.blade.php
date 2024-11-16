@@ -32,18 +32,21 @@
     </script>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen py-4">
+<body class="bg-gray-100 flex items-center justify-center min-w-full min-h-screen py-4">
     <div class="flex items-center justify-center w-full max-w-4xl">
         <div class="w-1/2 flex justify-center">
             <img alt="Logo 'Buket_ku.id'" class="h-48" height="300" src="{{ asset('assets/images/logo.png') }}" width="300" />
         </div>
         <div class="w-1/2 bg-white p-8 rounded-lg shadow-lg">
-            <h2 class="text-3xl font-bold text-blue-900 mb-4">Sign up</h2>
-            <p class="text-gray-600 mb-6">We need some information to create your account</p>
-            <form method="POST" action="{{ route('register') }}">
+            <header class="flex flex-col justify-center w-full mb-4">
+                <h1 class="text-4xl font-semibold tracking-tight text-blue-950 max-md:text-3xl">Sign up</h1>
+                <p class="mt-5 text-md font-medium tracking-normal text-zinc-500 max-md:max-w-full">We need you to help us with some basic information to create your account</p>
+            </header>
+
+            <form method="POST" action="{{ route('register') }}" class="flex flex-col gap-4 font-medium min-w-full">
                 @csrf
 
-                <div class="mb-4">
+                <div>
                     <label class="block text-gray-700 mb-2" for="name">Nama</label>
                     <input class="w-full px-3 py-2 border rounded-lg @error('name') border-red-500 @enderror" id="name" name="name" type="text" value="{{ old('name') }}" required />
                     @error('name')
@@ -51,7 +54,7 @@
                     @enderror
                 </div>
 
-                <div class="mb-4">
+                <div>
                     <label class="block text-gray-700 mb-2" for="email">Email</label>
                     <input class="w-full px-3 py-2 border rounded-lg @error('email') border-red-500 @enderror" id="email" name="email" type="email" value="{{ old('email') }}" required />
                     @error('email')
@@ -59,7 +62,7 @@
                     @enderror
                 </div>
 
-                <div class="mb-4">
+                <div>
                     <label class="block text-gray-700 mb-2" for="no_telepon">No Telepon</label>
                     <input class="w-full px-3 py-2 border rounded-lg @error('no_telepon') border-red-500 @enderror" id="no_telepon" name="no_telepon" type="text" value="{{ old('no_telepon') }}" required />
                     @error('no_telepon')
@@ -67,7 +70,7 @@
                     @enderror
                 </div>
 
-                <div class="mb-6 relative">
+                <div class="relative">
                     <label class="block text-gray-700 mb-2" for="password">Password</label>
                     <input class="w-full px-3 py-2 border rounded-lg @error('password') border-red-500 @enderror" id="password" name="password" type="password" required />
                     <i id="eye-icon" class="fas fa-eye absolute right-3 top-11 text-gray-500 cursor-pointer" onclick="togglePassword()"></i>
@@ -76,7 +79,7 @@
                     @enderror
                 </div>
 
-                <div class="mb-6 relative">
+                <div class="relative">
                     <label for="password_confirmation" class="block text-gray-700 mb-2">Konfirmasi Password</label>
                     <input type="password" name="password_confirmation" id="password_confirmation" required class="w-full px-3 py-2 border rounded-lg" />
                     <i id="eye-icon-2" class="fas fa-eye absolute right-3 top-11 text-gray-500 cursor-pointer" onclick="toggleConfPassword()"></i>
@@ -88,7 +91,7 @@
                 <button class="w-full bg-purple-700 text-white py-2 rounded-lg font-semibold hover:bg-purple-800" type="submit">Sign up</button>
             </form>
 
-            <p class="text-center text-gray-600 mt-4">Already have an account? <a class="text-blue-600" href="{{ route('login') }}">Sign in</a></p>
+            <p class="text-center text-gray-600 mt-4 font-medium">Already have an account? <a class="text-blue-600 hover:underline" href="{{ route('login') }}">Sign in</a></p>
         </div>
     </div>
 </body>
