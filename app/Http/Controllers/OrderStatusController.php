@@ -8,7 +8,7 @@ class OrderStatusController extends Controller
 {
     public function index()
     {
-        return view('order_status'); 
+        return view('orders.order_status'); 
     }
 
 }

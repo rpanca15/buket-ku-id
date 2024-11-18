@@ -23,7 +23,8 @@
             <h2 class="sr-only">Product List</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 @forelse ($graduations as $item)
-                    <a href="link-to-product1" class="block">
+                    <a href="{{ route('product.show', ['categoryName' => strtolower($item->category->name), 'slug' => $item->slug]) }}"
+                        class="block">
                         <article>
                             <div class="bg-zinc-100 rounded-3xl overflow-hidden aspect-square">
                                 <img src="{{ asset('storage/products/' . $item->image) }}" alt="{{ $item->name }}"

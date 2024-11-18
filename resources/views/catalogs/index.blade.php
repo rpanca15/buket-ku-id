@@ -18,13 +18,14 @@
             <div class="flex justify-between items-center">
                 <h2 class="text-3xl font-bold mb-5">Buket Artificial</h2>
                 @if ($artificials !== 'null')
-                    <a href="{{ route('catalogs.artificial') }}" class="text-violet-800 hover:underline group transition ease-in duration-300">View all <i
+                    <a href="{{ route('catalogs.artificial') }}"
+                        class="text-violet-800 hover:underline group transition ease-in duration-300">View all <i
                             class="fas fa-chevron-right text-sm group-hover:text-xl"></i></a>
                 @endif
             </div>
             <div class="flex gap-5 pb-4 scroll-smooth overflow-x-scroll custom-scrollbar">
                 @forelse ($artificials as $item)
-                    <a href="#"
+                    <a href="{{ route('product.show', ['categoryName' => strtolower($item->category->name), 'slug' => $item->slug]) }}"
                         class="block flex-none w-[calc(25%-1.25rem)] md:w-[calc(50%-1.25rem)] lg:w-[calc(25%-1.25rem)]">
                         <article class="flex flex-col gap-4">
                             <div class="bg-zinc-100 rounded-3xl overflow-hidden aspect-square">
@@ -46,7 +47,7 @@
             <h2 class="text-3xl font-bold mb-5">Buket Wisuda</h2>
             <div class="flex gap-5 pb-4 scroll-smooth overflow-x-scroll custom-scrollbar">
                 @forelse ($graduations as $item)
-                    <a href="#"
+                    <a href="{{ route('product.show', ['categoryName' => strtolower($item->category->name), 'slug' => $item->slug]) }}"
                         class="block flex-none w-[calc(25%-1.25rem)] md:w-[calc(50%-1.25rem)] lg:w-[calc(25%-1.25rem)]">
                         <article class="flex flex-col gap-4">
                             <div class="bg-zinc-100 rounded-3xl overflow-hidden aspect-square">
@@ -68,7 +69,7 @@
             <h2 class="text-3xl font-bold mb-5">Buket Snack</h2>
             <div class="flex gap-5 pb-4 scroll-smooth overflow-x-scroll custom-scrollbar">
                 @forelse ($snacks as $item)
-                    <a href="#"
+                    <a href="{{ route('product.show', ['categoryName' => strtolower($item->category->name), 'slug' => $item->slug]) }}"
                         class="block flex-none w-[calc(25%-1.25rem)] md:w-[calc(50%-1.25rem)] lg:w-[calc(25%-1.25rem)]">
                         <article class="flex flex-col gap-4">
                             <div class="bg-zinc-100 rounded-3xl overflow-hidden aspect-square">

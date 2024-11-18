@@ -151,6 +151,13 @@
             </form>
 
             @guest
+            <a href="{{ route('cart.index') }}" title="Cart"
+                class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
+                <i class="fas fa-cart-shopping text-[20px]"></i>
+            </a>
+            @endguest
+
+            @guest
                 <div class="flex gap-6 items-center justify-center">
                     <a href="{{ route('login') }}" title="Login"
                         class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
@@ -165,7 +172,7 @@
 
             @auth
                 <div class="flex gap-6 items-center jusitfy-center">
-                    <a href="{{ route('admin') }}" title="Cart"
+                    <a href="{{ route('cart.index') }}" title="Cart"
                         class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
                         <i class="fas fa-cart-shopping text-[20px]"></i>
                     </a>

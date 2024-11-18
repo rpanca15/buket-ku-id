@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,15 @@ class CartController extends Controller
      */
     public function index()
     {
-        $cart = session()->get('cart', []);
-        return view('user.cart.index', compact('cart'));
+        // Ambil data keranjang pengguna yang sedang login
+        $cartItems = Cart::where('user_id', Auth::id())->get();
+
+        // Hitung total harga untuk setiap item
+        $totalPrice = $cartItems->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
+
+        return view('cart.index', compact('cartItems', 'totalPrice'));
     }
 
     /**
@@ -24,15 +32,20 @@ class CartController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        // Ambil kuantitas dari request dan validasi (jika ada)
+        $quantity = $request->input('quantity', 1); // default ke 1 jika tidak ada input
+
         $cart = session()->get('cart', []);
 
         if (isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+            // Jika produk sudah ada di keranjang, tambahkan kuantitas
+            $cart[$id]['quantity'] += $quantity;
         } else {
+            // Jika produk belum ada, tambahkan dengan kuantitas
             $cart[$id] = [
                 'name' => $product->name,
                 'price' => $product->price,
-                'quantity' => 1,
+                'quantity' => $quantity,
                 'image' => $product->image,
             ];
         }
@@ -48,7 +61,7 @@ class CartController extends Controller
     public function remove($id)
     {
         $cart = session()->get('cart', []);
-        
+
         if (isset($cart[$id])) {
             unset($cart[$id]);
         }
@@ -64,8 +77,21 @@ class CartController extends Controller
     public function update(Request $request, $id)
     {
         $cart = session()->get('cart', []);
+
         if (isset($cart[$id])) {
-            $cart[$id]['quantity'] = $request->quantity;
+            // Validasi kuantitas
+            $quantity = $request->input('quantity', 1);
+            $product = Product::find($id);
+
+            if ($quantity <= 0) {
+                return redirect()->route('cart.index')->with('error', 'Kuantitas harus lebih besar dari 0.');
+            }
+
+            if ($quantity > $product->stock) {
+                return redirect()->route('cart.index')->with('error', 'Stok tidak cukup.');
+            }
+
+            $cart[$id]['quantity'] = $quantity;
         }
 
         session()->put('cart', $cart);

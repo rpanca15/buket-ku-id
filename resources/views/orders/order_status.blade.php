@@ -364,7 +364,7 @@
                             <!-- Bagian Kiri -->
                             <div class="flex flex-col w-full items-start gap-2 p-6 max-md:p-5 relative">
                                 <p
-                                    class="absolute top-6 right-6 px-6 py-2 bg-violet-100 rounded-3xl text-violet-900 text-center">
+                                    class="absolute top-6 right-6 px-6 py-2 bg-green-100 rounded-3xl text-green-900 text-center">
                                     Selesai</p>
                                 <p class="text-xl text-black">ID Order: SMA 8</p>
                                 <p class="text-xl text-black">Lokasi COD: SMA 8</p>

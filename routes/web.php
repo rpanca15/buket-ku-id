@@ -9,7 +9,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CatalogArtificialController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderStatusController;
@@ -17,11 +16,10 @@ use App\Http\Controllers\OrderStatusController;
 // Halaman beranda dan produk, bisa diakses oleh semua pengguna (guest dan user)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'home'])->name('hom');
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/catalogs/{categoryName}/{slug}', [CatalogController::class, 'show'])->name('product.show');
 
 // Route untuk halaman cart
-Route::prefix('cart')->name('cart.')->group(function () {
+Route::prefix('cart')->name('cart.')->middleware('auth')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('index'); // View cart
     Route::post('/add', [CartController::class, 'add'])->name('add'); // Add item to cart
     Route::post('/remove', [CartController::class, 'remove'])->name('remove'); // Remove item from cart
