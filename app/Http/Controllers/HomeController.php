@@ -9,7 +9,17 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get();
-        return view('index', compact('products')); // Jika user atau guest
+        // Ambil produk terbaru (misalnya 4 produk terbaru)
+        $products = Product::with('category')
+            ->latest() // Mengurutkan berdasarkan created_at terbaru
+            ->take(4) // Ambil 4 produk terbaru
+            ->get();
+            
+        return view('index', compact('products'));
+    }
+
+    public function home()
+    {
+        return view('home');
     }
 }

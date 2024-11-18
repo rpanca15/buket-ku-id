@@ -8,7 +8,7 @@ class CatalogArtificialController extends Controller
 {
     public function index()
     {
-        return view('catalog_artificial'); 
+        return view('catalog.catalog_artificial'); 
     }
 
 }

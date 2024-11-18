@@ -97,13 +97,22 @@
             }
         </script>
     @endif
-
-    <nav class="px-10 mt-2.5 max-md:px-5 max-w-screen">
+    @guest
+        <div id="promoBanner"
+            class="bg-violet-900 text-white text-sm font-bold px-20 py-2.5 flex flex-wrap items-center justify-between max-md:px-5">
+            <p>
+                Sign up and get 20% off to your first order.
+                <a href="{{ route('register') }}" class="underline">Sign Up Now</a>
+            </p>
+            <i class="fas fa-times text-2xl cursor-pointer" onclick="closeBanner()"></i>
+        </div>
+    @endguest
+    <nav class="px-10 max-md:px-5 max-w-screen">
         <div class="flex gap-8 justify-between items-center mx-auto">
             <img src="{{ asset('assets/images/logo.png') }}" alt="Buket_ku.id Logo" class="w-[175px] h-[auto]">
 
             <ul class="flex gap-6 items-center justify-between text-base">
-                <li><a href="#" class="hover:text-violet-700">Home</a></li>
+                <li><a href="{{ route('home') }}" class="hover:text-violet-700">Home</a></li>
                 <li class="relative inline-block text-left group px-1">
                     <button class="px-3 py-2 hover:text-violet-700">
                         Catalog
@@ -112,15 +121,19 @@
                         class="absolute left-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 invisible group-hover:visible 
                         transition-all duration-200 opacity-0 group-hover:opacity-100 z-50 pb-2">
                         <div class="py-1">
-                            <a href="#"
+                            <a href="{{ route('catalogs') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
+                                All
+                            </a>
+                            <a href="{{ route('catalogs.artificial') }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
                                 Artificial
                             </a>
-                            <a href="#"
+                            <a href="{{ route('catalogs.graduation') }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
                                 Graduation
                             </a>
-                            <a href="#"
+                            <a href="{{ route('catalogs.snack') }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
                                 Snack
                             </a>
@@ -128,7 +141,6 @@
                     </div>
                 </li>
                 <li><a href="{{ route('order_status') }}" class="hover:text-violet-700">Order</a></li>
-                <li><a href="{{ route('admin') }}" class="hover:text-violet-700">Dashboard</a></li>
             </ul>
 
             <form class="flex items-center bg-violet-50 rounded-full px-4 py-3 w-[485px] max-w-full">
@@ -183,12 +195,12 @@
         <hr class="border-t border-black border-opacity-10 my-4 mx-auto">
     </nav>
 
-    <main>
+    <main class="bg-white mb-20">
         @yield('content')
     </main>
 
     <footer
-        class="flex flex-col items-center self-stretch px-16 py-7 mt-56 w-full bg-zinc-100 max-md:px-5 max-md:mt-10 max-md:max-w-full">
+        class="flex flex-col items-center self-stretch px-16 py-7 w-full bg-zinc-100 max-md:px-5 max-md:mt-10 max-md:max-w-full">
         <div class="self-stretch max-md:max-w-full">
             <div class="flex gap-5 max-md:flex-col">
                 <div class="flex flex-col w-[45%] max-md:ml-0 max-md:w-full">
@@ -245,6 +257,14 @@
             Buket_ku.co © 2000-{{ now()->year }}, All Rights Reserved
         </p>
     </footer>
+
+    <script>
+        function closeBanner() {
+            const banner = document.getElementById('promoBanner');
+            banner.classList.add('hidden');
+        }
+    </script>
+    @yield('scripts')
 </body>
 
 </html>

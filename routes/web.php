@@ -16,6 +16,7 @@ use App\Http\Controllers\OrderStatusController;
 
 // Halaman beranda dan produk, bisa diakses oleh semua pengguna (guest dan user)
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'home'])->name('hom');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
@@ -29,13 +30,13 @@ Route::prefix('cart')->name('cart.')->group(function () {
 });
 
 // Route untuk menampilkan halaman katalog
-Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/catalogs', [CatalogController::class, 'index'])->name('catalogs');
+Route::get('/catalogs/artificial', [CatalogController::class, 'artificial'])->name('catalogs.artificial');
+Route::get('/catalogs/graduation', [CatalogController::class, 'graduation'])->name('catalogs.graduation');
+Route::get('/catalogs/snack', [CatalogController::class, 'snack'])->name('catalogs.snack');
 
 // Route untuk menampilkan halaman order status
 Route::get('/order-status', [OrderStatusController::class, 'index'])->name('order_status');
-// Route untuk menampilkan halaman order status
-Route::get('/catalog-artificial', [CatalogArtificialController::class, 'index'])->name('catalog_artificial.index');
-
 // Rute untuk login dan register hanya untuk guest (belum login)
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -50,14 +51,13 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Rute untuk user terautentikasi yang bisa membuat order
-Route::group(['middleware' => ['role:user']], function() {
+Route::group(['middleware' => ['role:user']], function () {
     // Order hanya bisa diakses oleh user yang sudah login
     Route::resource('/orders', OrderController::class)->only(['index', 'store', 'edit', 'update', 'destroy']);
-
 });
 
 // Rute untuk admin dengan akses penuh
-Route::group(['middleware' => ['role:admin']], function() {
+Route::group(['middleware' => ['role:admin']], function () {
     // Dashboard untuk admin
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
 
