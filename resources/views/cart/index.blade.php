@@ -33,39 +33,56 @@
                                 <div
                                     class="flex overflow-hidden flex-col px-6 py-5 mt-5 w-full rounded-3xl border border-solid border-black border-opacity-10 max-md:px-5 max-md:max-w-full">
                                     <article class="flex flex-wrap gap-4 items-center w-full max-md:max-w-full">
-                                        <img loading="lazy" src="{{ $item->product->image_url }}"
+                                        <img loading="lazy" src="{{ asset('/storage/products/' . $item->product->image) }}"
                                             alt="{{ $item->product->name }}"
                                             class="object-contain shrink-0 self-stretch my-auto rounded-lg aspect-square w-[124px]" />
                                         <div
                                             class="flex flex-wrap flex-1 shrink gap-10 justify-between items-center self-stretch my-auto basis-0 min-w-[240px] max-md:max-w-full">
                                             <div class="flex flex-col justify-between self-stretch my-auto min-h-[118px]">
-                                                <h2 class="text-xl">{{ $item->product->name }}</h2>
-                                                <p class="mt-14 text-2xl max-md:mt-10">
-                                                    ${{ number_format($item->product->price, 2) }}</p>
+                                                <div class="flex flex-col gap-2">
+                                                    <h2 class="text-xl">{{ $item->product->name }}</h2>
+                                                    <h2 class="text-sm">Stock: {{ $item->product->stock }}</h2>
+                                                </div>
+                                                <p class="text-2xl max-md:mt-10">
+                                                    {{ 'Rp ' . number_format($item->product->price, 0, ',', '.') }}</p>
                                             </div>
                                             <div
                                                 class="flex flex-col justify-between items-end self-stretch my-auto text-sm whitespace-nowrap min-h-[124px] w-[225px]">
-                                                <form action="{{ route('cart.remove', $item->product->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="w-6 h-6">
-                                                        <img loading="lazy" src="https://example.com/remove-icon.png"
-                                                            alt="Remove" class="object-contain w-6 aspect-square" />
-                                                    </button>
-                                                </form>
+                                                <div class="min-w-full flex items-center justify-between">
+                                                    <input type="checkbox" name="selected_items[]"
+                                                        value="{{ $item->product_id }}"
+                                                        data-product-id="{{ $item->product->id }}"
+                                                        data-price="{{ $item->product->price * $item->quantity }}"
+                                                        class="select-item cursor-pointer w-6 h-6 rounded-md border-gray-300">
+                                                    <form action="{{ route('cart.remove', $item->product->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')"
+                                                            class="text-2xl text-red-500 hover:text-red-700 rounded-full transition ease-in duration-300">
+                                                            <i class="fas fa-circle-minus"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
                                                 <div
-                                                    class="flex overflow-hidden gap-5 justify-center items-center px-5 py-3 mt-14 bg-zinc-100 rounded-[62px] max-md:mt-10">
-                                                    <button aria-label="Decrease quantity" class="w-5 h-5">
-                                                        <img loading="lazy" src="https://example.com/decrease-icon.png"
-                                                            alt="Decrease"
-                                                            class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" />
+                                                    class="flex overflow-hidden gap-5 justify-center items-center p-2 mt-14 bg-zinc-100 rounded-[62px] max-md:mt-10">
+                                                    <button type="button"
+                                                        class="quantity-decrease text-sm px-3 py-2 rounded-full hover:bg-gray-300 transition ease-in duration-300"
+                                                        data-product-id="{{ $item->product->id }}"
+                                                        {{ $item->quantity <= 1 ? 'disabled' : '' }}>
+                                                        <i class="fas fa-minus"></i>
                                                     </button>
-                                                    <span>{{ $item->quantity }}</span>
-                                                    <button aria-label="Increase quantity" class="w-5 h-5">
-                                                        <img loading="lazy" src="https://example.com/increase-icon.png"
-                                                            alt="Increase"
-                                                            class="object-contain shrink-0 self-stretch my-auto w-5 aspect-square" />
+
+                                                    <input type="number"
+                                                        class="quantity-input w-14 text-center py-2 rounded-full bg-white border border-gray-300"
+                                                        data-product-id="{{ $item->product->id }}"
+                                                        value="{{ $item->quantity }}" min="1"
+                                                        max="{{ $item->product->stock }}" required />
+
+                                                    <button type="button"
+                                                        class="quantity-increase text-sm px-3 py-2 rounded-full hover:bg-gray-300 transition ease-in duration-300"
+                                                        data-product-id="{{ $item->product->id }}">
+                                                        <i class="fas fa-plus"></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -76,7 +93,7 @@
 
                             <!-- Tampilkan total harga hanya jika ada produk dalam cart -->
                             <div class="mt-5 text-xl font-bold">
-                                <p>Total: ${{ number_format($totalPrice, 2) }}</p>
+                                <p>Total: {{ 'Rp ' . number_format($totalPrice, 0, ',', '.') }}</p>
                             </div>
                         @endif
                     </div>
@@ -86,80 +103,226 @@
                 <aside class="flex flex-col ml-5 w-1/2 max-md:ml-0">
                     <div class="flex flex-col gap-6 w-full text-black max-md:mt-10">
                         <h2 class="text-2xl font-bold">Rincian Pemesanan</h2>
-
-                        <!-- Dropdown Lokasi COD -->
-                        <div class="flex items-center justify-between gap-3 p-2 bg-zinc-100 rounded-[62px]">
-                            <label for="lokasi-cod" class="ps-6 text-sm font-medium">Pilih lokasi COD</label>
-                            <select id="lokasi-cod" class="w-1/2 flex items-center justify-center bg-zinc-200 border-none text-sm py-2 px-6 rounded-full">
-                                <option value="" disabled selected hidden>-- Pilih lokasi --</option>
-                                <option value="sman-8-surakarta">SMAN 8 Surakarta</option>
-                                <option value="taman-jaya-wijaya">Taman Jaya Wijaya</option>
-                                <option value="uns-kentingan">UNS Kentingan</option>
-                                <option value="buket-ku-id">Ambil di alamat Buket_ku.id</option>
-                            </select>
-                        </div>
-
-                        <!-- Dropdown Metode Pembayaran -->
-                        <div class="flex items-center justify-between gap-3 p-2 bg-zinc-100 rounded-[62px]">
-                            <label for="metode-pembayaran" class="ps-6 text-sm font-medium">Pilih metode pembayaran</label>
-                            <select id="metode-pembayaran" class="w-1/2 flex items-center justify-center bg-zinc-200 border-none text-sm py-2 px-6 rounded-full">
-                                <option value="">-- Pilih metode --</option>
-                                <option value="bayar-di-tempat">Bayar di tempat</option>
-                                <option value="shopeepay">Shopeepay</option>
-                            </select>
-                        </div>
-
-                        <!-- Pemilih Tanggal -->
-                        <div class="flex items-center justify-between gap-3 p-2 bg-zinc-100 rounded-[62px]">
-                            <label for="tanggal-cod" class="ps-6 text-sm font-medium">Pilih Tanggal COD</label>
-                            <input type="date" id="tanggal-cod"
-                                class="w-1/2 flex items-center justify-center bg-zinc-200 border-none text-sm py-2 rounded-full" />
-                        </div>
-
-                        <!-- Garis Pemisah -->
-                        <div class="flex flex-col gap-3 max-w-full">
-                            <hr class="w-full border-t border-solid border-black border-opacity-10" />
-                            <div class="flex justify-between items-center w-full">
-                                <p class="text-xl">Total</p>
-                                <p class="text-2xl font-bold text-right">Rp{{ number_format($totalPrice, 2) }}</p>
+                        <form action="{{ route('cart.checkout') }}" method="POST" id="checkoutForm"
+                            enctype="multipart/form-data" class="flex flex-col gap-6">
+                            @csrf
+                            <!-- Dropdown Lokasi COD -->
+                            <div class="flex items-center justify-between gap-3 p-2 bg-zinc-100 rounded-[62px]">
+                                <label for="lokasi-cod" class="ps-6 text-sm font-medium">Pilih lokasi COD</label>
+                                <select id="lokasi-cod" name="cod_location"
+                                    class="w-1/2 flex items-center justify-center bg-white border-none text-sm py-2 px-6 rounded-full">
+                                    <option value="" disabled selected hidden>-- Pilih lokasi --</option>
+                                    <option value="sman-8-surakarta">SMAN 8 Surakarta</option>
+                                    <option value="taman-jaya-wijaya">Taman Jaya Wijaya</option>
+                                    <option value="uns-kentingan">UNS Kentingan</option>
+                                    <option value="buket-ku-id">Ambil di alamat Buket_ku.id</option>
+                                </select>
+                                @error('cod_location')
+                                    <div class="text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
-                        </div>
 
-                        <!-- Tombol Go to Checkout -->
-                        <button id="checkout-button"
-                            class="flex gap-3 justify-center items-center self-end px-12 py-4 mt-8 text-base font-bold text-white bg-gray-300 rounded-[62px] cursor-not-allowed disabled:opacity-50 max-md:px-5 max-md:mt-5"
-                            disabled>
-                            <span class="self-stretch">Go to Checkout</span>
-                            <i class="fas fa-bag-shopping"></i>
-                        </button>
+                            <!-- Dropdown Metode Pembayaran -->
+                            <div class="flex items-center justify-between gap-3 p-2 bg-zinc-100 rounded-[62px]">
+                                <label for="metode-pembayaran" class="ps-6 text-sm font-medium">Pilih metode
+                                    pembayaran</label>
+                                <select id="metode-pembayaran" name="payment_method"
+                                    class="w-1/2 flex items-center justify-center bg-white border-none text-sm py-2 px-6 rounded-full">
+                                    <option value="" disabled selected hidden>-- Pilih metode --</option>
+                                    <option value="bayar-di-tempat">Bayar di tempat</option>
+                                    <option value="shopeepay">Shopeepay</option>
+                                </select>
+                                @error('payment_method')
+                                    <div class="text-red-500 mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Pemilih Tanggal -->
+                            <div class="flex items-center justify-between gap-3 p-2 bg-zinc-100 rounded-[62px]">
+                                <label for="tanggal-cod" class="ps-6 text-sm font-medium">Pilih Tanggal COD</label>
+                                <input type="date" id="tanggal-cod" name="cod_date"
+                                    class="w-1/2 flex items-center justify-center bg-white border-none text-sm py-2 rounded-full"
+                                    required />
+                            </div>
+
+                            <!-- Garis Pemisah -->
+                            <div class="flex flex-col gap-3 max-w-full">
+                                <hr class="w-full border-t border-solid border-black border-opacity-10" />
+                                <div class="flex justify-between items-center w-full">
+                                    <p class="text-xl">Total</p>
+                                    <p class="text-2xl font-bold text-right total-price">Rp 0</p>
+                                </div>
+                            </div>
+
+                            <!-- Tombol Checkout -->
+                            <button type="submit" id="checkout-button"
+                                class="flex gap-3 justify-center items-center self-end px-12 py-4 mt-8 text-base font-bold text-white bg-gray-300 rounded-[62px] cursor-not-allowed transition-colors ease-in duration-300">
+                                <span class="self-stretch">Go to Checkout</span>
+                                <i class="fas fa-bag-shopping"></i>
+                            </button>
+                        </form>
                     </div>
                 </aside>
             </div>
         </div>
     </main>
+
+    <style>
+        /* Menghapus spinner pada input number */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
 @endsection
 
 @section('scripts')
     <script>
+        const checkboxes = document.querySelectorAll('.select-item');
         const lokasiCod = document.getElementById('lokasi-cod');
         const metodePembayaran = document.getElementById('metode-pembayaran');
         const tanggalCod = document.getElementById('tanggal-cod');
         const checkoutButton = document.getElementById('checkout-button');
+        const selectedProductsInput = document.getElementById('selected-products');
+        const totalPriceElement = document.querySelector('.total-price');
 
         function checkSelections() {
-            if (lokasiCod.value && metodePembayaran.value && tanggalCod.value) {
+            // Cek apakah ada checkbox yang dipilih
+            const isItemSelected = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            const isFormComplete = lokasiCod.value && metodePembayaran.value && tanggalCod.value;
+
+            if (isItemSelected && isFormComplete) {
                 checkoutButton.classList.remove('bg-gray-300', 'cursor-not-allowed');
-                checkoutButton.classList.add('bg-violet-900');
+                checkoutButton.classList.add('bg-violet-900', 'hover:bg-violet-700');
                 checkoutButton.disabled = false;
             } else {
                 checkoutButton.classList.add('bg-gray-300', 'cursor-not-allowed');
-                checkoutButton.classList.remove('bg-violet-900');
+                checkoutButton.classList.remove('bg-violet-900', 'hover:bg-violet-700');
                 checkoutButton.disabled = true;
             }
+
+            // Menghitung total harga berdasarkan produk yang dipilih
+            let totalPrice = 0;
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    totalPrice += parseFloat(checkbox.dataset.price);
+                }
+            });
+
+            totalPriceElement.textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
         }
 
+        // Tambahkan event listener untuk checkbox dan form fields
+        checkboxes.forEach(checkbox => checkbox.addEventListener('change', checkSelections));
         lokasiCod.addEventListener('change', checkSelections);
         metodePembayaran.addEventListener('change', checkSelections);
         tanggalCod.addEventListener('change', checkSelections);
+
+        // Periksa pada saat halaman pertama kali dimuat
+        checkSelections();
+
+        document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+            const selectedCheckboxes = document.querySelectorAll('.select-item:checked');
+            const selectedItems = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+
+            const existingInput = document.getElementById('selected-products');
+            if (existingInput) {
+                existingInput.remove();
+            }
+
+            selectedItems.forEach((itemId, index) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = `selected_items[${index}]`;
+                input.value = itemId;
+                this.appendChild(input);
+            });
+        });
+
+        // Fungsi update kuantitas
+        document.addEventListener('DOMContentLoaded', function() {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            // Handle quantity updates for all items
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                const productId = input.dataset.productId;
+                const decreaseBtn = document.querySelector(
+                    `.quantity-decrease[data-product-id="${productId}"]`);
+                const increaseBtn = document.querySelector(
+                    `.quantity-increase[data-product-id="${productId}"]`);
+                const maxStock = parseInt(input.max);
+
+                // Increase button handler
+                increaseBtn.addEventListener('click', function() {
+                    let currentValue = parseInt(input.value);
+                    if (currentValue < maxStock) {
+                        input.value = currentValue + 1;
+                        updateQuantity(productId, input.value);
+                    }
+                });
+
+                // Decrease button handler
+                decreaseBtn.addEventListener('click', function() {
+                    let currentValue = parseInt(input.value);
+                    if (currentValue > 1) {
+                        input.value = currentValue - 1;
+                        updateQuantity(productId, input.value);
+                    }
+                });
+
+                // Manual input handler
+                input.addEventListener('input', function() {
+                    let value = parseInt(this.value);
+                    if (isNaN(value) || value < 1) {
+                        this.value = 1;
+                        value = 1;
+                    } else if (value > maxStock) {
+                        this.value = maxStock;
+                        value = maxStock;
+                    }
+                    updateQuantity(productId, value);
+                });
+            });
+
+            // Debounced update function
+            let updateTimeouts = {};
+
+            function updateQuantity(productId, newQuantity) {
+                if (updateTimeouts[productId]) {
+                    clearTimeout(updateTimeouts[productId]);
+                }
+
+                updateTimeouts[productId] = setTimeout(function() {
+                    const updateUrl = `/carts/update/${productId}`;
+
+                    fetch(updateUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                            body: JSON.stringify({
+                                quantity: newQuantity,
+                            }),
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.href = "{{ route('cart.index') }}";
+                            } else {
+                                console.warn('Update request failed');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Terjadi kesalahan dalam pengiriman kuantitas.');
+                        });
+                }, 300);
+            }
+        });
     </script>
 @endsection

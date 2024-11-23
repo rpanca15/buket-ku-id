@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -140,7 +141,7 @@
                         </div>
                     </div>
                 </li>
-                <li><a href="{{ route('order_status') }}" class="hover:text-violet-700">Order</a></li>
+                <li><a href="{{ route('order.index') }}" class="hover:text-violet-700">Order</a></li>
             </ul>
 
             <form class="flex items-center bg-violet-50 rounded-full px-4 py-3 w-[485px] max-w-full">

@@ -48,7 +48,8 @@
             <h2 class="self-center text-5xl font-bold text-center text-violet-900 max-md:text-4xl mb-20">NEW ARRIVALS</h2>
             <div class="flex gap-12 max-md:flex-col">
                 @forelse ($products as $product)
-                    <a href="#" class="flex flex-col w-[24%] max-md:ml-0 max-md:w-full">
+                    <a href="{{ route('product.show', ['categoryName' => strtolower($product->category->name), 'slug' => $product->slug]) }}"
+                        class="flex flex-col w-[24%] max-md:w-full transition-transform duration-300 hover:scale-105 hover:translate-y-[-10px]">
                         <div class="flex flex-col items-center justify-center w-full">
                             <div class="flex flex-col gap-4">
                                 <div
@@ -58,7 +59,8 @@
                                 </div>
                                 <h3 class="self-start text-xl font-bold text-black">{{ $product->name }}</h3>
                                 <p class="self-start text-2xl font-bold text-violet-900">
-                                    {{ 'Rp ' . number_format($product->price, 0, ',', '.') }}</p>
+                                    {{ 'Rp ' . number_format($product->price, 0, ',', '.') }}
+                                </p>
                             </div>
                         </div>
                     </a>
@@ -68,12 +70,15 @@
                     </div>
                 @endforelse
             </div>
-            <div class="flex justify-center">
-                <a id="view-all" href="{{ route('catalogs') }}"
-                    class="flex items-center justify-center px-14 py-4 mt-16 text-lg font-extrabold text-violet-900 border-2 border-violet-900 border-solid rounded-[62px] w-[218px] max-md:px-5 max-md:mt-10 bg-white hover:bg-violet-900 hover:text-white transition-colors duration-300">
-                    View All
-                </a>
-            </div>
+
+            @if ($products->isNotEmpty())
+                <div class="flex justify-center">
+                    <a id="view-all" href="{{ route('catalogs') }}"
+                        class="flex items-center justify-center px-14 py-4 mt-16 text-lg font-extrabold text-violet-900 border-2 border-violet-900 border-solid rounded-[62px] w-[218px] max-md:px-5 max-md:mt-10 bg-white hover:bg-violet-900 hover:text-white transition-colors duration-300">
+                        View All
+                    </a>
+                </div>
+            @endif
         </section>
         <hr
             class="shrink-0 mt-12 max-w-full h-px border border-solid border-black border-opacity-10 w-[1240px] max-md:mt-10" />
@@ -83,16 +88,19 @@
             BROWSE BY DREAM BOUQUET</h2>
         <section class="mt-12 w-full max-w-[989px] max-md:mt-10 max-md:max-w-full">
             <div class="flex gap-5 max-md:flex-col">
-                @foreach ([['title' => 'Snack', 'img' => 'image 7.png'], ['title' => 'Graduation', 'img' => 'image 8.png'], ['title' => 'Artificial', 'img' => 'image 9 (1).png']] as $bouquet)
-                    <div class="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                        <div class="flex flex-col max-md:mt-6">
-                            <div class="flex overflow-hidden flex-col items-center rounded-3xl aspect-square bg-white-100">
+                @foreach ([['title' => 'Snack', 'img' => 'image_7.png'], ['title' => 'Graduation', 'img' => 'image_8.png'], ['title' => 'Artificial', 'img' => 'image_9.png']] as $bouquet)
+                    <div class="flex flex-col w-6/12 max-md:w-full">
+                        <a href="{{ route('catalogs.' . strtolower($bouquet['title'])) }}" class="flex flex-col max-md:mt-6 cursor-pointer">
+                            <div
+                                class="flex overflow-hidden items-center justify-center rounded-3xl aspect-square bg-white-100 transition-transform duration-500 hover:scale-105 hover:-translate-y-2">
                                 <img loading="lazy" src="{{ asset('assets/images/' . $bouquet['img']) }}"
-                                    alt="{{ $bouquet['title'] }} bouquet" class="object-contain w-full aspect-[0.99]" />
+                                    alt="{{ $bouquet['title'] }} bouquet"
+                                    class="object-cover w-full transition-transform duration-500">
                             </div>
                             <h3 class="self-center mt-11 text-xl font-bold text-black max-md:mt-10 text-center mx-auto">
-                                {{ $bouquet['title'] }}</h3>
-                        </div>
+                                {{ $bouquet['title'] }}
+                            </h3>
+                        </a>
                     </div>
                 @endforeach
             </div>

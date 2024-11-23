@@ -32,8 +32,20 @@
                                 <img src="{{ asset('storage/products/' . $item->image) }}" alt="{{ $item->name }}"
                                     class="w-full h-full object-cover">
                             </div>
-                            <h3 class="text-xl font-bold">{{ $item->name }}</h3>
-                            <p class="text-2xl font-bold">{{ 'Rp ' . number_format($item->price, 0, ',', '.') }}</p>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xl font-bold">{{ $item->name }}</h3>
+                                    <p class="text-2xl font-bold">{{ 'Rp ' . number_format($item->price, 0, ',', '.') }}</p>
+                                </div>
+                                <form class="flex items-center gap-4 pr-4" action="{{ route('cart.add', $item->id) }}"
+                                    method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="text-violet-900 font-bold text-2xl hover:text-violet-700 transition-colors ease-in duration-300">
+                                        <i class="fas fa-cart-shopping"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </article>
                     </a>
                 @empty
@@ -54,8 +66,21 @@
                                 <img src="{{ asset('storage/products/' . $item->image) }}" alt="{{ $item->name }}"
                                     class="w-full h-full object-cover">
                             </div>
-                            <h3 class="text-xl font-bold">{{ $item->name }}</h3>
-                            <p class="text-2xl font-bold">{{ 'Rp ' . number_format($item->price, 0, ',', '.') }}</p>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xl font-bold">{{ $item->name }}</h3>
+                                    <p class="text-2xl font-bold">{{ 'Rp ' . number_format($item->price, 0, ',', '.') }}
+                                    </p>
+                                </div>
+                                <form class="flex items-center gap-4 pr-4" action="{{ route('cart.add', $item->id) }}"
+                                    method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="text-violet-900 font-bold text-2xl hover:text-violet-700 transition-colors ease-in duration-300">
+                                        <i class="fas fa-cart-shopping"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </article>
                     </a>
                 @empty
@@ -76,8 +101,21 @@
                                 <img src="{{ asset('storage/products/' . $item->image) }}" alt="{{ $item->name }}"
                                     class="w-full h-full object-cover">
                             </div>
-                            <h3 class="text-xl font-bold">{{ $item->name }}</h3>
-                            <p class="text-2xl font-bold">{{ 'Rp ' . number_format($item->price, 0, ',', '.') }}</p>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-xl font-bold">{{ $item->name }}</h3>
+                                    <p class="text-2xl font-bold">{{ 'Rp ' . number_format($item->price, 0, ',', '.') }}
+                                    </p>
+                                </div>
+                                <form class="flex items-center gap-4 pr-4" action="{{ route('cart.add', $item->id) }}"
+                                    method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="text-violet-900 font-bold text-2xl hover:text-violet-700 transition-colors ease-in duration-300">
+                                        <i class="fas fa-cart-shopping"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </article>
                     </a>
                 @empty

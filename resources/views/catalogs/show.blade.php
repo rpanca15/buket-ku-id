@@ -7,7 +7,8 @@
             <ol class="flex items-center">
                 <li><a href="/" class="text-black text-opacity-60 hover:text-opacity-100">Home</a></li>
                 <li class="mx-2"><i class="fas fa-chevron-right text-sm text-gray-600"></i></li>
-                <li><a href="{{ route('catalogs') }}" class="text-black text-opacity-60 hover:text-opacity-100">Catalog</a></li>
+                <li><a href="{{ route('catalogs') }}" class="text-black text-opacity-60 hover:text-opacity-100">Catalog</a>
+                </li>
                 <li class="mx-2"><i class="fas fa-chevron-right text-sm text-gray-600"></i></li>
                 <li>
                     <a href="{{ route('catalogs.' . strtolower($product->category->name)) }}"
@@ -78,7 +79,7 @@
             -webkit-appearance: none;
             margin: 0;
         }
-    
+
         input[type="number"] {
             -moz-appearance: textfield;
         }

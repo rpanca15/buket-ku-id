@@ -131,7 +131,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="{{ route('users.index') }}"
                             class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-users"></i> <!-- Custom Orders Icon -->
                             <span class="ml-2">Customers</span>

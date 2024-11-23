@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('cod_location');
             $table->decimal('total', 10, 2);
             $table->foreignId('status_id')->constrained('orders_status')->default(1);
-            $table->timestamp('order_status_date')->nullable();
             $table->timestamps();
         });
 
