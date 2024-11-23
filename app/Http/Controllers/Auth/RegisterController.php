@@ -41,10 +41,7 @@ class RegisterController extends Controller
             'role' => 'user',
         ]);
 
-        // Login otomatis setelah registrasi
-        Auth::login($user);
-
-        Cache::put('success', 'Registrasi berhasil! Selamat datang!', now()->addSeconds(5));
+        Cache::put('success', 'Registrasi berhasil!', now()->addSeconds(5));
         return redirect('/');
     }
 }

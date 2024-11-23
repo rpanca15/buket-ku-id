@@ -47,7 +47,38 @@
 </head>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    @if (Cache::has('error'))
+    @if (Cache::has('success'))
+        <!-- Modal untuk pesan sukses -->
+        <div id="success-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
+            <div class="bg-white rounded-lg p-6 w-1/3 shadow-lg modal">
+                <h3 class="text-lg font-semibold text-green-600">Success</h3>
+                <p class="text-gray-700 mt-2">{{ Cache::get('success') }}</p>
+                {{-- <div class="mt-4 flex justify-end">
+                    <button onclick="closeModal('success-modal')"
+                        class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600">
+                        Close
+                    </button>
+                </div> --}}
+            </div>
+        </div>
+
+        <script>
+            setTimeout(function() {
+                closeModal('success-modal');
+            }, 1500);
+
+            function closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+
+                modal.querySelector('.modal').classList.add('modal-close');
+
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.querySelector('.modal').classList.remove('modal-close');
+                }, 300);
+            }
+        </script>
+    @elseif (Cache::has('error'))
         <!-- Modal untuk pesan error -->
         <div id="error-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
             <div class="bg-white rounded-lg p-6 w-1/3 shadow-lg modal">
@@ -79,7 +110,7 @@
             }
         </script>
     @endif
-    
+
     <div class="flex justify-evenly gap-8 items-center">
         <!-- Logo Section -->
         <div class="w-1/2 flex justify-center">
