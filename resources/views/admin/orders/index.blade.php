@@ -9,7 +9,7 @@
         <h1 class="text-3xl font-bold mb-6">Orders</h1>
         <!-- Tabel Orders -->
         <div class="bg-white shadow-lg rounded-lg p-4 min-h-[calc(100vh-100px)]">
-            <div class="overflow-auto min-w-full max-h-[calc(100vh-130px)] custom-scrollbar">
+            <div class="overflow-auto min-w-full max-h-[calc(100vh-100px)] custom-scrollbar">
                 <table class="table min-w-full border-collapse">
                     <!-- Header dengan posisi sticky -->
                     <thead class="sticky top-0 bg-gray-100 z-10">
@@ -20,8 +20,7 @@
                             <th scope="col" class="text-center px-4 py-3">Tanggal COD</th>
                             <th scope="col" class="text-center px-4 py-3">Lokasi COD</th>
                             <th scope="col" class="text-center px-4 py-3">Total Harga</th>
-                            <th scope="col" class="text-center px-4 py-3">Metode Pembayaran</th> <!-- Tambahan -->
-                            <th scope="col" class="text-center px-4 py-3">Payment</th>
+                            <th scope="col" class="text-center px-4 py-3">Payment</th> <!-- Kolom Status Pembayaran -->
                             <th scope="col" class="text-center px-4 py-3">Status</th>
                         </tr>
                     </thead>
@@ -36,13 +35,7 @@
                                 </td>
                                 <td class="px-4 py-3 text-center max-w-[150px]">{{ $order->cod_location }}</td>
                                 <td class="px-4 py-3 text-center max-w-[150px]">
-                                    Rp{{ number_format($order->total, 2, ',', '.') }}
-                                </td>
-
-                                <!-- Kolom Metode Pembayaran -->
-                                <td class="px-4 py-3 text-center max-w-[150px]">
-                                    {{ $order->payment->method ?? 'Tidak Diketahui' }}
-                                </td>
+                                    Rp{{ number_format($order->total, 2, ',', '.') }}</td>
 
                                 <!-- Kolom Status Pembayaran -->
                                 <td class="px-4 py-3 text-center max-w-[100px]">
@@ -52,12 +45,9 @@
                                         @else
                                             <span class="text-green-500">{{ ucfirst($order->payment->status) }}</span>
                                         @endif
-                                    @else
-                                        <span class="text-gray-500">Tidak Diketahui</span>
                                     @endif
                                 </td>
 
-                                <!-- Kolom Status -->
                                 <td class="px-4 py-3 text-center max-w-[200px]">
                                     <div class="relative">
                                         <select class="status-dropdown w-full px-2 py-1 border rounded"
@@ -97,12 +87,85 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9" class="text-center p-4 text-gray-500">Tidak ada pesanan</td>
+                                <td colspan="8" class="text-center p-4 text-gray-500">Tidak ada pesanan</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
+
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+                dropdown.addEventListener('change', function() {
+                    const orderId = this.dataset.orderId;
+                    const saveBtn = document.querySelector(
+                        `.save-status-btn[data-order-id="${orderId}"]`);
+                    const currentStatus = this.dataset.currentStatus;
+
+                    // Tampilkan tombol simpan hanya jika status berubah
+                    if (this.value !== currentStatus) {
+                        saveBtn.classList.remove('hidden');
+                    } else {
+                        saveBtn.classList.add('hidden');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.save-status-btn').forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const orderId = this.dataset.orderId;
+                    const dropdown = document.querySelector(
+                        `.status-dropdown[data-order-id="${orderId}"]`);
+
+                    // Add null check
+                    if (!dropdown) {
+                        console.error(`No dropdown found for order ID: ${orderId}`);
+                        return;
+                    }
+
+                    const newStatus = dropdown.value;
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+
+                    // Add null check for CSRF token
+                    if (!csrfToken) {
+                        console.error('CSRF token not found');
+                        alert('Error: CSRF token missing');
+                        return;
+                    }
+
+                    fetch(`/orders/${orderId}/update-status`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
+                            },
+                            body: JSON.stringify({
+                                status_id: newStatus // Changed from 'status' to 'status_id'
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // alert('Status berhasil diubah!');
+                                this.classList.add('hidden');
+                                dropdown.dataset.currentStatus = newStatus;
+                            } else {
+                                // alert('Gagal mengubah status!');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // alert('Terjadi kesalahan dalam memperbarui status');
+                        });
+                });
+            });
+        });
+    </script>
 @endsection
