@@ -47,7 +47,7 @@
                                         <p class="px-6 py-2 bg-red-100 rounded-3xl text-red-900 text-center">
                                             {{ $item->status->status }}
                                         </p>
-                                        @if($item->payment->status === 'pending')
+                                        @if($item->payment->status === 'pending' && $item->payment->method !== 'COD')
                                             <a href="{{ route('order.payment', $item->id) }}"
                                                 class="px-6 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition">
                                                 Bayar Sekarang

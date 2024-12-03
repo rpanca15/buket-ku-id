@@ -129,8 +129,8 @@
                                 <select id="metode-pembayaran" name="payment_method"
                                     class="w-1/2 flex items-center justify-center bg-white border-none text-sm py-2 px-6 rounded-full">
                                     <option value="" disabled selected hidden>-- Pilih metode --</option>
-                                    <option value="bayar-di-tempat">Bayar di tempat</option>
-                                    <option value="shopeepay">Shopeepay</option>
+                                    <option value="COD">Bayar di tempat</option>
+                                    <option value="SPAY">Shopeepay</option>
                                 </select>
                                 @error('payment_method')
                                     <div class="text-red-500 mt-1">{{ $message }}</div>

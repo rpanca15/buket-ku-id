@@ -62,9 +62,13 @@
                         ">{{ $order->payment->status }}</span>
                     </p>
                     @if ($order->payment->status === 'completed')
-                        <p><strong>Payment Date:</strong> {{ \Carbon\Carbon::parse($order->payment->updated_at)->format('d M Y') }}
+                        <p><strong>Tanggal Pembayaran:</strong>
+                            {{ \Carbon\Carbon::parse($order->payment->updated_at)->format('d M Y') }}
                         </p>
                     @endif
+                    <p><strong>Metode Pembayaran:</strong>
+                        {{ $order->payment->method }}
+                    </p>
                 </div>
             </div>
 
