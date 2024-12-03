@@ -15,8 +15,10 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with('user', 'status', 'details.product')->get();
-        return view('admin.orders.index', compact('orders'));
+        $statuses = OrderStatus::all();
+        $orders = Order::with('user', 'status', 'details.product', 'payment')->get(); // Tambahkan relasi 'payment'
+
+        return view('admin.orders.index', compact('orders', 'statuses'));
     }
 
     public function create()
@@ -88,7 +90,7 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $order = Order::with('user', 'status', 'details.product')->findOrFail($id);
+        $order = Order::with('user', 'status', 'details.product', 'payment')->findOrFail($id);
         return view('admin.orders.show', compact('order'));
     }
 
@@ -159,6 +161,20 @@ class OrderController extends Controller
             DB::rollBack();
             return back()->withErrors(['error' => 'Gagal memperbarui pesanan.'])->withInput();
         }
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status_id' => 'required|exists:orders_status,id',
+        ]);
+
+        $order = Order::findOrFail($id);
+
+        $order->update([
+            'status_id' => $validated['status_id'],
+        ]);
+        return response()->json(['success' => true, 'message' => 'Status berhasil diperbarui.']);
     }
 
     public function destroy($id)

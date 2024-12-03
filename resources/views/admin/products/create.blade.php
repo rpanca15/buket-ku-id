@@ -57,10 +57,10 @@
                 </div>
 
                 <!-- Deskripsi Produk -->
-                <div>
-                    <label for="description" class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi Produk</label>
+                <div class="flex items-center gap-8">
+                    <label for="description" class="block text-sm font-semibold text-gray-700 mb-1 w-[10%]">Deskripsi Produk</label>
                     <textarea id="description" name="description" rows="4"
-                        class="w-full px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('description') border-red-500 @enderror"
+                        class="flex-grow px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('description') border-red-500 @enderror"
                         required>{{ old('description') }}</textarea>
                     @error('description')
                         <div class="text-red-500 mt-2">{{ $message }}</div>
@@ -68,8 +68,9 @@
                 </div>
 
                 <!-- Harga Produk -->
-                <div class="flex items-center gap-8"">
-                    <label for="price" class="block text-sm font-semibold text-gray-700 mb-1 w-[10%]">Harga Produk</label>
+                <div class="flex items-center gap-8">
+                    <label for="price" class="block text-sm font-semibold text-gray-700 mb-1 w-[10%]">Harga
+                        Produk</label>
                     <input type="number" step="1000" min="0" id="price" name="price"
                         value="{{ old('price') }}"
                         class="flex-grow px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('price') border-red-500 @enderror"
@@ -80,7 +81,7 @@
                 </div>
 
                 <!-- Stok Produk -->
-                <div class="flex items-center gap-8"">
+                <div class="flex items-center gap-8">
                     <label for="stock" class="block text-sm font-semibold text-gray-700 mb-1 w-[10%]">Stok Produk</label>
                     <input type="number" id="stock" min="0" name="stock" value="{{ old('stock') }}"
                         class="flex-grow px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('stock') border-red-500 @enderror"
@@ -91,7 +92,7 @@
                 </div>
 
                 <!-- Kategori Produk -->
-                <div class="flex items-center gap-8"">
+                <div class="flex items-center gap-8">
                     <label for="category_id" class="block text-sm font-semibold text-gray-700 mb-1 w-[10%]">Kategori</label>
                     <select id="category_id" name="category_id"
                         class="flex-grow px-3 py-2 border rounded-lg focus:ring-indigo-500 focus:border-indigo-500 @error('category_id') border-red-500 @enderror"
@@ -111,13 +112,13 @@
 
                 <!-- Tombol Simpan -->
                 <div class="flex justify-between">
-                    <button type="submit" title="Simpan"
-                        class="w-[64px] bg-blue-500 text-white py-3 rounded-full hover:bg-blue-600 transition w-24">
-                        <i class="fas fa-save"></i>
-                    </button>
                     <button type="reset" title="Reset"
-                        class="w-[64px] bg-red-500 text-white py-3 rounded-full hover:bg-red-600 transition w-24">
-                        <i class="fas fa-undo"></i>
+                        class="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition ease-in-out duration-300">
+                        <i class="fas fa-undo mr-3"></i>Reset
+                    </button>
+                    <button type="submit" title="Simpan"
+                        class="bg-x-purple text-white px-6 py-2 rounded-full hover:bg-purple-500 transition ease-in-out duration-300">
+                        <i class="fas fa-save mr-3"></i>Save
                     </button>
                 </div>
             </div>

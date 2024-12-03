@@ -43,9 +43,17 @@
                                 class="flex flex-col text-xl rounded-3xl border border-violet-900 border-solid min-w-full min-h-auto">
                                 <!-- Bagian Kiri -->
                                 <div class="flex flex-col min-w-full items-start gap-2 p-6 max-md:p-5 relative">
-                                    <p
-                                        class="absolute top-6 right-6 px-6 py-2 bg-red-100 rounded-3xl text-red-900 text-center">
-                                        {{ $item->status->status }}</p>
+                                    <div class="absolute top-6 right-6 flex items-center gap-4">
+                                        <p class="px-6 py-2 bg-red-100 rounded-3xl text-red-900 text-center">
+                                            {{ $item->status->status }}
+                                        </p>
+                                        @if($item->payment->status === 'pending')
+                                            <a href="{{ route('order.payment', $item->id) }}"
+                                                class="px-6 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition">
+                                                Bayar Sekarang
+                                            </a>
+                                        @endif
+                                    </div>
                                     <p class="text-xl text-black">ID Order: {{ $item->id }}</p>
                                     <p class="text-xl text-black">Lokasi COD: {{ $item->cod_location }}</p>
                                     <p class="text-xl text-black">Tanggal COD:

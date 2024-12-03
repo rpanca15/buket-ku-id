@@ -150,16 +150,13 @@
                 <input type="search" placeholder="Search for products..."
                     class="bg-transparent border-none outline-none flex-grow text-black text-opacity-40">
             </form>
-
-            @guest
-            <a href="{{ route('cart.index') }}" title="Cart"
-                class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
-                <i class="fas fa-cart-shopping text-[20px]"></i>
-            </a>
-            @endguest
-
+            
             @guest
                 <div class="flex gap-6 items-center justify-center">
+                    <a href="{{ route('cart.index') }}" title="Cart"
+                        class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
+                        <i class="fas fa-cart-shopping text-[20px]"></i>
+                    </a>
                     <a href="{{ route('login') }}" title="Login"
                         class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
                         <i class="fas fa-sign-in text-[20px] font-bold"></i>
@@ -183,20 +180,30 @@
                             <i class="fas fa-dashboard text-[20px]"></i>
                         </a>
                     @endif
-                    <a href="{{ route('admin') }}" title="Profile"
-                        class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
-                        <i class="fas fa-circle-user text-[20px]"></i>
-                    </a>
+                    <div class="relative inline-block text-left group px-1">
+                        <button
+                            class="text-violet-900 px-3 py-2 rounded hover:text-violet-700 transition ease-in-out duration-300">
+                            <i class="fas fa-circle-user text-[22px]"></i>
+                        </button>
+                        <div
+                            class="absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 invisible group-hover:visible 
+                            transition-all duration-200 opacity-0 group-hover:opacity-100 z-50">
+                            <div class="py-1">
+                                <a href="{{ route('profile.index') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
+                                    Profile
+                                </a>
+                                <form action="{{ route('logout') }}" method="POST"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-red-500 cursor-pointer">
+                                    @csrf
+                                    <button type="submit" class="text-left w-full">
+                                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <form action="{{ route('logout') }}" method="POST" class="inline">
-                    @csrf
-                    <button type="submit" title="Logout"
-                        class="text-red-400 rounded-lg transition ease-in-out duration-300 relative group">
-                        <i class="fas fa-sign-out-alt text-2xl flex opacity-100 group-hover:opacity-0"></i>
-                        <i
-                            class="fas fa-person-running text-2xl absolute left-0 top-0 opacity-0 group-hover:opacity-100  transition ease-in-out duration-300"></i>
-                    </button>
-                </form>
             @endauth
         </div>
 

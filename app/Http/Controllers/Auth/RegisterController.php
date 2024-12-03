@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
 {
@@ -28,9 +29,19 @@ class RegisterController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'no_telepon' => 'required|string|max:15|unique:users', // Menambahkan validasi untuk nomor telepon
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                Password::min(8) // Minimal 8 karakter
+                    ->letters() // Harus mengandung huruf
+                    ->mixedCase() // Harus ada kombinasi huruf besar dan kecil
+                    ->numbers() // Harus mengandung angka
+                    ->symbols() // Harus mengandung simbol
+            ],
+            'no_telepon' => 'required|string|max:15|unique:users',
         ]);
+
 
         // Membuat pengguna baru
         $user = User::create([

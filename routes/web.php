@@ -14,7 +14,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController as UserOrderController;
-use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\ProfileController;
 
 // Halaman beranda dan produk, bisa diakses oleh semua pengguna (guest dan user)
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -26,6 +26,14 @@ Route::get('/catalogs', [CatalogController::class, 'index'])->name('catalogs');
 Route::get('/catalogs/artificial', [CatalogController::class, 'artificial'])->name('catalogs.artificial');
 Route::get('/catalogs/graduation', [CatalogController::class, 'graduation'])->name('catalogs.graduation');
 Route::get('/catalogs/snack', [CatalogController::class, 'snack'])->name('catalogs.snack');
+
+// Rute untuk login dan register hanya untuk guest (belum login)
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
+});
 
 // Route untuk reset password
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgot.password.form');
@@ -39,20 +47,21 @@ Route::prefix('carts')->name('cart.')->middleware('auth')->group(function () {
     Route::post('/add/{id}', [CartController::class, 'add'])->name('add'); // Add item to cart
     Route::post('/remove/{id}', [CartController::class, 'remove'])->name('remove'); // Remove item from cart
     Route::post('/update/{id}', [CartController::class, 'update'])->name('update'); // Update item quantity
-    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout'); // Proceed to checkout
 });
 
 // Route untuk halaman order
 Route::prefix('orders')->name('order.')->middleware('auth')->group(function () {
     Route::get('/', [UserOrderController::class, 'index'])->name('index'); // View cart
+    Route::post('/checkout', [UserOrderController::class, 'store'])->name('checkout'); // Proceed to checkout
+    Route::get('/payment/{orderId}', [UserOrderController::class, 'showPayment'])->name('payment'); // View payment page
+    Route::post('/payment/{orderId}', [UserOrderController::class, 'processPayment'])->name('processPayment'); // Process payment
 });
 
-// Rute untuk login dan register hanya untuk guest (belum login)
-Route::middleware(['guest'])->group(function () {
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'login']);
-    Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register']);
+// Route untuk halaman profile
+Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])->name('index'); // View cart
+    Route::post('/update/{id}', [ProfileController::class, 'updateProfile'])->name('update'); // Proceed to checkout
+    Route::post('/update-password/{id}', [ProfileController::class, 'updatePassword'])->name('update-password'); // Proceed to checkout
 });
 
 // Rute untuk logout hanya untuk pengguna yang sudah login (auth)
@@ -64,6 +73,7 @@ Route::middleware(['auth'])->group(function () {
 Route::group(['middleware' => ['role:admin']], function () {
     // Dashboard untuk admin
     Route::get('/admin', [DashboardController::class, 'index'])->name('admin');
+    Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('updateStatus');
 
     // Rute untuk mengelola produk
     Route::resource('/admin/products', ProductController::class)

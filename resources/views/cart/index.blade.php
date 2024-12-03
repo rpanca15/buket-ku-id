@@ -103,7 +103,7 @@
                 <aside class="flex flex-col ml-5 w-1/2 max-md:ml-0">
                     <div class="flex flex-col gap-6 w-full text-black max-md:mt-10">
                         <h2 class="text-2xl font-bold">Rincian Pemesanan</h2>
-                        <form action="{{ route('cart.checkout') }}" method="POST" id="checkoutForm"
+                        <form action="{{ route('order.checkout') }}" method="POST" id="checkoutForm"
                             enctype="multipart/form-data" class="flex flex-col gap-6">
                             @csrf
                             <!-- Dropdown Lokasi COD -->
@@ -112,9 +112,9 @@
                                 <select id="lokasi-cod" name="cod_location"
                                     class="w-1/2 flex items-center justify-center bg-white border-none text-sm py-2 px-6 rounded-full">
                                     <option value="" disabled selected hidden>-- Pilih lokasi --</option>
-                                    <option value="sman-8-surakarta">SMAN 8 Surakarta</option>
-                                    <option value="taman-jaya-wijaya">Taman Jaya Wijaya</option>
-                                    <option value="uns-kentingan">UNS Kentingan</option>
+                                    <option value="SMAN 8 Surakarta">SMAN 8 Surakarta</option>
+                                    <option value="Taman Jaya Wijaya">Taman Jaya Wijaya</option>
+                                    <option value="UNS Kentingan">UNS Kentingan</option>
                                     <option value="buket-ku-id">Ambil di alamat Buket_ku.id</option>
                                 </select>
                                 @error('cod_location')
