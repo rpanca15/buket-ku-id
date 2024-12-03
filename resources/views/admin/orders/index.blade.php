@@ -9,7 +9,7 @@
         <h1 class="text-3xl font-bold mb-6">Orders</h1>
         <!-- Tabel Orders -->
         <div class="bg-white shadow-lg rounded-lg p-4 min-h-[calc(100vh-100px)]">
-            <div class="overflow-auto min-w-full max-h-[calc(100vh-100px)] custom-scrollbar">
+            <div class="overflow-auto min-w-full max-h-[calc(100vh-130px)] custom-scrollbar">
                 <table class="table min-w-full border-collapse">
                     <!-- Header dengan posisi sticky -->
                     <thead class="sticky top-0 bg-gray-100 z-10">
@@ -20,6 +20,7 @@
                             <th scope="col" class="text-center px-4 py-3">Tanggal COD</th>
                             <th scope="col" class="text-center px-4 py-3">Lokasi COD</th>
                             <th scope="col" class="text-center px-4 py-3">Total Harga</th>
+                            <th scope="col" class="text-center px-4 py-3">Metode Pembayaran</th>
                             <th scope="col" class="text-center px-4 py-3">Payment</th> <!-- Kolom Status Pembayaran -->
                             <th scope="col" class="text-center px-4 py-3">Status</th>
                         </tr>
@@ -38,6 +39,7 @@
                                     Rp{{ number_format($order->total, 2, ',', '.') }}</td>
 
                                 <!-- Kolom Status Pembayaran -->
+                                <td class="px-4 py-3 text-center max-w-[150px]">{{ $order->payment->method }}</td>
                                 <td class="px-4 py-3 text-center max-w-[100px]">
                                     @if ($order->payment)
                                         @if ($order->payment->status === 'pending')
