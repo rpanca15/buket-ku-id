@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Rules\Captcha;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -40,6 +41,7 @@ class RegisterController extends Controller
                     ->symbols() // Harus mengandung simbol
             ],
             'no_telepon' => 'required|string|max:15|unique:users',
+            'g-recaptcha-response' => new Captcha(),
         ]);
 
 
