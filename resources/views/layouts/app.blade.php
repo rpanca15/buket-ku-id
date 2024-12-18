@@ -67,11 +67,13 @@
             }
         </script>
     @elseif (Cache::has('error'))
+
+    @elseif (Cache::has('info'))
         <!-- Modal untuk pesan error -->
-        <div id="error-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
+        <div id="info-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
             <div class="bg-white rounded-lg p-6 w-1/3 shadow-lg modal">
-                <h3 class="text-lg font-semibold text-red-600">Error</h3>
-                <p class="text-gray-700 mt-2">{{ Cache::get('error') }}</p>
+                <h3 class="text-lg font-semibold text-blue-600">Info</h3>
+                <p class="text-gray-700 mt-2">{{ Cache::get('info') }}</p>
                 {{-- <div class="mt-4 flex justify-end">
                     <button onclick="closeModal('error-modal')"
                         class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600">
@@ -83,7 +85,7 @@
 
         <script>
             setTimeout(function() {
-                closeModal('error-modal');
+                closeModal('info-modal');
             }, 1500);
 
             function closeModal(modalId) {
@@ -144,13 +146,16 @@
                 <li><a href="{{ route('order.index') }}" class="hover:text-violet-700">Order</a></li>
             </ul>
 
-            <form class="flex items-center bg-violet-50 rounded-full px-4 py-3 w-[485px] max-w-full">
-                <img src="{{ asset('assets/images/icon/search.png') }}" alt="" class="w-6 h-6 mr-3"
+            <form action="{{ route('search') }}" method="POST"
+                class="flex items-center bg-violet-50 rounded-full px-4 py-3 w-[485px] max-w-full" id="searchForm">
+                @csrf
+                <img src="{{ asset('assets/images/icon/search.png') }}" alt="Search Icon" class="w-6 h-6 mr-3"
                     aria-hidden="true">
-                <input type="search" placeholder="Search for products..."
+                <input type="search" name="search" id="searchInput" placeholder="Search for products..." required
                     class="bg-transparent border-none outline-none flex-grow text-black text-opacity-40">
+                <button type="submit" class="hidden"></button>
             </form>
-            
+
             @guest
                 <div class="flex gap-6 items-center justify-center">
                     <a href="{{ route('cart.index') }}" title="Cart"
@@ -278,6 +283,13 @@
             const banner = document.getElementById('promoBanner');
             banner.classList.add('hidden');
         }
+
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            // Tunggu beberapa saat setelah form disubmit untuk mengosongkan kolom input
+            setTimeout(() => {
+                document.getElementById('searchInput').value = '';
+            }, 100); // Waktu tunda (100ms) untuk memastikan request berjalan lebih dulu
+        });
     </script>
     @yield('scripts')
 </body>

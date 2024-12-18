@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Rules\Captcha;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -54,7 +55,35 @@ class RegisterController extends Controller
             'role' => 'user',
         ]);
 
-        Cache::put('success', 'Registrasi berhasil!', now()->addSeconds(5));
+        // Trigger event Registered untuk mengirim email verifikasi
+        // event(new Registered($user));
+
+        // Kirim notifikasi verifikasi email
+        $user->sendEmailVerificationNotification();
+
+        Cache::put('success', 'Registrasi berhasil! Silakan periksa email untuk verifikasi.', now()->addSeconds(5));
+        return redirect('/');
+    }
+
+    public function resendVerificationLink(Request $request)
+    {
+        // Validasi user_id
+        $request->validate([
+            'user_id' => 'required|exists:users,id', // Pastikan user_id ada di database
+        ]);
+
+        // Ambil user berdasarkan id
+        $user = User::find($request->user_id);
+
+        if ($user && !$user->hasVerifiedEmail()) {
+            $user->sendEmailVerificationNotification();
+            
+            Cache::put('success', 'Link verifikasi telah dikirim ulang ke email Anda', now()->addSeconds(5));
+            return redirect('/');
+        }
+        
+        // Jika sudah terverifikasi, tampilkan pesan
+        Cache::put('info', 'Email sudah terverifikasi atau tidak ditemukan.', now()->addSeconds(5));
         return redirect('/');
     }
 }

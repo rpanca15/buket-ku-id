@@ -15,11 +15,48 @@ use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController as UserOrderController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
+Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
+    $user = \App\Models\User::find($id);
+
+    // Periksa apakah user ada
+    if (!$user) {
+        abort(404, 'User tidak ditemukan');
+    }
+
+    // Periksa apakah link valid
+    if (!$request->hasValidSignature()) {
+        return redirect()->route('verification.expired', ['id' => $user->id]);
+    }
+
+    // Periksa apakah email sudah diverifikasi
+    if ($user->hasVerifiedEmail()) {
+        Cache::put('info', 'Email sudah terverifikasi!', now()->addSeconds(5));
+        return redirect('/');
+    }
+
+    // Tandai email sebagai terverifikasi
+    $user->markEmailAsVerified();
+    Cache::put('success', 'Email berhasil diverifikasi!', now()->addSeconds(5));
+    return redirect('/');
+})->middleware(['signed'])->name('verification.verify');
+
+// Halaman error untuk link verifikasi kedaluwarsa
+Route::get('/email/verify/expired/{id}', function ($id) {
+    return view('auth.verify-expired', ['id' => $id]);
+})->name('verification.expired');
+
+Route::post('/email/resend', [RegisterController::class, 'resendVerificationLink'])
+    ->name('verification.resend');
 
 // Halaman beranda dan produk, bisa diakses oleh semua pengguna (guest dan user)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'home'])->name('hom');
 Route::get('/catalogs/{categoryName}/{slug}', [CatalogController::class, 'show'])->name('product.show');
+Route::post('/search', action: [HomeController::class, 'search'])->name('search');
 
 // Route untuk menampilkan halaman katalog
 Route::get('/catalogs', [CatalogController::class, 'index'])->name('catalogs');
@@ -41,27 +78,29 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetToke
 Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset.password');
 Route::get('/reset-password/{email}/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.form');
 
-// Route untuk halaman cart
-Route::prefix('carts')->name('cart.')->middleware('auth')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('index'); // View cart
-    Route::post('/add/{id}', [CartController::class, 'add'])->name('add'); // Add item to cart
-    Route::post('/remove/{id}', [CartController::class, 'remove'])->name('remove'); // Remove item from cart
-    Route::post('/update/{id}', [CartController::class, 'update'])->name('update'); // Update item quantity
-});
+Route::middleware(['auth'])->group(function () {
+    // Route untuk halaman cart
+    Route::prefix('carts')->name('cart.')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('index'); // View cart
+        Route::post('/add/{id}', [CartController::class, 'add'])->name('add'); // Add item to cart
+        Route::post('/remove/{id}', [CartController::class, 'remove'])->name('remove'); // Remove item from cart
+        Route::post('/update/{id}', [CartController::class, 'update'])->name('update'); // Update item quantity
+    });
 
-// Route untuk halaman order
-Route::prefix('orders')->name('order.')->middleware('auth')->group(function () {
-    Route::get('/', [UserOrderController::class, 'index'])->name('index'); // View cart
-    Route::post('/checkout', [UserOrderController::class, 'store'])->name('checkout'); // Proceed to checkout
-    Route::get('/payment/{orderId}', [UserOrderController::class, 'showPayment'])->name('payment'); // View payment page
-    Route::post('/payment/{orderId}', [UserOrderController::class, 'processPayment'])->name('processPayment'); // Process payment
-});
+    // Route untuk halaman order
+    Route::prefix('orders')->name('order.')->group(function () {
+        Route::get('/', [UserOrderController::class, 'index'])->name('index'); // View cart
+        Route::post('/checkout', [UserOrderController::class, 'store'])->name('checkout'); // Proceed to checkout
+        Route::get('/payment/{orderId}', [UserOrderController::class, 'showPayment'])->name('payment'); // View payment page
+        Route::post('/payment/{orderId}', [UserOrderController::class, 'processPayment'])->name('processPayment'); // Process payment
+    });
 
-// Route untuk halaman profile
-Route::prefix('profile')->name('profile.')->middleware('auth')->group(function () {
-    Route::get('/', [ProfileController::class, 'index'])->name('index'); // View cart
-    Route::post('/update/{id}', [ProfileController::class, 'updateProfile'])->name('update'); // Proceed to checkout
-    Route::post('/update-password/{id}', [ProfileController::class, 'updatePassword'])->name('update-password'); // Proceed to checkout
+    // Route untuk halaman profile
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index'); // View cart
+        Route::post('/update/{id}', [ProfileController::class, 'updateProfile'])->name('update'); // Proceed to checkout
+        Route::post('/update-password/{id}', [ProfileController::class, 'updatePassword'])->name('update-password'); // Proceed to checkout
+    });
 });
 
 // Rute untuk logout hanya untuk pengguna yang sudah login (auth)

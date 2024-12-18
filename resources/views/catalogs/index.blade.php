@@ -17,10 +17,10 @@
         <section class="min-w-full mx-auto">
             <div class="flex justify-between items-center">
                 <h2 class="text-3xl font-bold mb-5">Buket Artificial</h2>
-                @if ($artificials !== 'null')
+                @if (!$artificials->isEmpty())
                     <a href="{{ route('catalogs.artificial') }}"
-                        class="text-violet-800 hover:underline group transition ease-in duration-300">View all <i
-                            class="fas fa-chevron-right text-sm group-hover:text-xl"></i></a>
+                        class="flex items-center text-violet-800 hover:underline hover:translate-x-2 transition ease-in duration-300">View
+                        all&nbsp;&nbsp;&nbsp;<i class="fas fa-arrow-right"></i></a>
                 @endif
             </div>
             <div class="flex gap-5 pb-4 scroll-smooth overflow-x-scroll custom-scrollbar">
@@ -56,7 +56,14 @@
             </div>
         </section>
         <section class="min-w-full mx-auto">
-            <h2 class="text-3xl font-bold mb-5">Buket Wisuda</h2>
+            <div class="flex justify-between items-center">
+                <h2 class="text-3xl font-bold mb-5">Buket Wisuda</h2>
+                @if (!$graduations->isEmpty())
+                    <a href="{{ route('catalogs.graduation') }}"
+                        class="flex items-center text-violet-800 hover:underline hover:translate-x-2 transition ease-in duration-300">View
+                        all&nbsp;&nbsp;&nbsp;<i class="fas fa-arrow-right"></i></a>
+                @endif
+            </div>
             <div class="flex gap-5 pb-4 scroll-smooth overflow-x-scroll custom-scrollbar">
                 @forelse ($graduations as $item)
                     <a href="{{ route('product.show', ['categoryName' => strtolower($item->category->name), 'slug' => $item->slug]) }}"
@@ -91,7 +98,14 @@
             </div>
         </section>
         <section class="min-w-full mx-auto">
-            <h2 class="text-3xl font-bold mb-5">Buket Snack</h2>
+            <div class="flex justify-between items-center">
+                <h2 class="text-3xl font-bold mb-5">Buket Snack</h2>
+                @if (!$snacks->isEmpty())
+                    <a href="{{ route('catalogs.snack') }}"
+                        class="flex items-center text-violet-800 hover:underline hover:translate-x-2 transition ease-in duration-300">View
+                        all&nbsp;&nbsp;&nbsp;<i class="fas fa-arrow-right"></i></a>
+                @endif
+            </div>
             <div class="flex gap-5 pb-4 scroll-smooth overflow-x-scroll custom-scrollbar">
                 @forelse ($snacks as $item)
                     <a href="{{ route('product.show', ['categoryName' => strtolower($item->category->name), 'slug' => $item->slug]) }}"
