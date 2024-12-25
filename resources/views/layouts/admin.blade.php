@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -131,10 +132,17 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#"
+                        <a href="{{ route('users.index') }}"
                             class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-users"></i> <!-- Custom Orders Icon -->
                             <span class="ml-2">Customers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('backup.index') }}"
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
+                            <i class="fas fa-database"></i> <!-- Backup Icon -->
+                            <span class="ml-4">Backup</span>
                         </a>
                     </li>
                 </ul>

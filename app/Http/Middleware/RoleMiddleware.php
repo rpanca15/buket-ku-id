@@ -12,7 +12,7 @@ class RoleMiddleware
     public function handle($request, Closure $next, $role)
     {
         if (!Auth::check()) {
-            Cache::put('error', 'Silakan login untuk mengakses halaman ini', now()->addSeconds(5));
+            Cache::put('error', 'Silakan login untuk mengakses aktivitas ini', now()->addSeconds(5));
             return redirect()->route('login');
         }
 

@@ -18,7 +18,7 @@ class Order extends Model
         'cod_location',
     ];
 
-    protected $with = ['details', 'status'];
+    protected $with = ['details', 'status', 'payment'];
 
     public function user()
     {
@@ -33,6 +33,11 @@ class Order extends Model
     public function status()
     {
         return $this->belongsTo(OrderStatus::class, 'status_id');
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 
     public function getStatusNameAttribute()

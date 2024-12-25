@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -66,11 +67,13 @@
             }
         </script>
     @elseif (Cache::has('error'))
+
+    @elseif (Cache::has('info'))
         <!-- Modal untuk pesan error -->
-        <div id="error-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
+        <div id="info-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
             <div class="bg-white rounded-lg p-6 w-1/3 shadow-lg modal">
-                <h3 class="text-lg font-semibold text-red-600">Error</h3>
-                <p class="text-gray-700 mt-2">{{ Cache::get('error') }}</p>
+                <h3 class="text-lg font-semibold text-blue-600">Info</h3>
+                <p class="text-gray-700 mt-2">{{ Cache::get('info') }}</p>
                 {{-- <div class="mt-4 flex justify-end">
                     <button onclick="closeModal('error-modal')"
                         class="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600">
@@ -82,7 +85,7 @@
 
         <script>
             setTimeout(function() {
-                closeModal('error-modal');
+                closeModal('info-modal');
             }, 1500);
 
             function closeModal(modalId) {
@@ -97,13 +100,22 @@
             }
         </script>
     @endif
-
-    <nav class="px-10 mt-2.5 max-md:px-5 max-w-screen">
+    @guest
+        <div id="promoBanner"
+            class="bg-violet-900 text-white text-sm font-bold px-20 py-2.5 flex flex-wrap items-center justify-between max-md:px-5">
+            <p>
+                Sign up and get 20% off to your first order.
+                <a href="{{ route('register') }}" class="underline">Sign Up Now</a>
+            </p>
+            <i class="fas fa-times text-2xl cursor-pointer" onclick="closeBanner()"></i>
+        </div>
+    @endguest
+    <nav class="px-10 max-md:px-5 max-w-screen">
         <div class="flex gap-8 justify-between items-center mx-auto">
             <img src="{{ asset('assets/images/logo.png') }}" alt="Buket_ku.id Logo" class="w-[175px] h-[auto]">
 
             <ul class="flex gap-6 items-center justify-between text-base">
-                <li><a href="#" class="hover:text-violet-700">Home</a></li>
+                <li><a href="{{ route('home') }}" class="hover:text-violet-700">Home</a></li>
                 <li class="relative inline-block text-left group px-1">
                     <button class="px-3 py-2 hover:text-violet-700">
                         Catalog
@@ -112,34 +124,44 @@
                         class="absolute left-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 invisible group-hover:visible 
                         transition-all duration-200 opacity-0 group-hover:opacity-100 z-50 pb-2">
                         <div class="py-1">
-                            <a href="#"
+                            <a href="{{ route('catalogs') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
+                                All
+                            </a>
+                            <a href="{{ route('catalogs.artificial') }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
                                 Artificial
                             </a>
-                            <a href="#"
+                            <a href="{{ route('catalogs.graduation') }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
                                 Graduation
                             </a>
-                            <a href="#"
+                            <a href="{{ route('catalogs.snack') }}"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
                                 Snack
                             </a>
                         </div>
                     </div>
                 </li>
-                <li><a href="{{ route('order_status') }}" class="hover:text-violet-700">Order</a></li>
-                <li><a href="{{ route('admin') }}" class="hover:text-violet-700">Dashboard</a></li>
+                <li><a href="{{ route('order.index') }}" class="hover:text-violet-700">Order</a></li>
             </ul>
 
-            <form class="flex items-center bg-violet-50 rounded-full px-4 py-3 w-[485px] max-w-full">
-                <img src="{{ asset('assets/images/icon/search.png') }}" alt="" class="w-6 h-6 mr-3"
+            <form action="{{ route('search') }}" method="POST"
+                class="flex items-center bg-violet-50 rounded-full px-4 py-3 w-[485px] max-w-full" id="searchForm">
+                @csrf
+                <img src="{{ asset('assets/images/icon/search.png') }}" alt="Search Icon" class="w-6 h-6 mr-3"
                     aria-hidden="true">
-                <input type="search" placeholder="Search for products..."
+                <input type="search" name="search" id="searchInput" placeholder="Search for products..." required
                     class="bg-transparent border-none outline-none flex-grow text-black text-opacity-40">
+                <button type="submit" class="hidden"></button>
             </form>
 
             @guest
                 <div class="flex gap-6 items-center justify-center">
+                    <a href="{{ route('cart.index') }}" title="Cart"
+                        class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
+                        <i class="fas fa-cart-shopping text-[20px]"></i>
+                    </a>
                     <a href="{{ route('login') }}" title="Login"
                         class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
                         <i class="fas fa-sign-in text-[20px] font-bold"></i>
@@ -153,7 +175,7 @@
 
             @auth
                 <div class="flex gap-6 items-center jusitfy-center">
-                    <a href="{{ route('admin') }}" title="Cart"
+                    <a href="{{ route('cart.index') }}" title="Cart"
                         class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
                         <i class="fas fa-cart-shopping text-[20px]"></i>
                     </a>
@@ -163,32 +185,42 @@
                             <i class="fas fa-dashboard text-[20px]"></i>
                         </a>
                     @endif
-                    <a href="{{ route('admin') }}" title="Profile"
-                        class="text-violet-900 rounded hover:text-violet-700 transition ease-in-out duration-300">
-                        <i class="fas fa-circle-user text-[20px]"></i>
-                    </a>
+                    <div class="relative inline-block text-left group px-1">
+                        <button
+                            class="text-violet-900 px-3 py-2 rounded hover:text-violet-700 transition ease-in-out duration-300">
+                            <i class="fas fa-circle-user text-[22px]"></i>
+                        </button>
+                        <div
+                            class="absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 invisible group-hover:visible 
+                            transition-all duration-200 opacity-0 group-hover:opacity-100 z-50">
+                            <div class="py-1">
+                                <a href="{{ route('profile.index') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-violet-700">
+                                    Profile
+                                </a>
+                                <form action="{{ route('logout') }}" method="POST"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-red-500 cursor-pointer">
+                                    @csrf
+                                    <button type="submit" class="text-left w-full">
+                                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <form action="{{ route('logout') }}" method="POST" class="inline">
-                    @csrf
-                    <button type="submit" title="Logout"
-                        class="text-red-400 rounded-lg transition ease-in-out duration-300 relative group">
-                        <i class="fas fa-sign-out-alt text-2xl flex opacity-100 group-hover:opacity-0"></i>
-                        <i
-                            class="fas fa-person-running text-2xl absolute left-0 top-0 opacity-0 group-hover:opacity-100  transition ease-in-out duration-300"></i>
-                    </button>
-                </form>
             @endauth
         </div>
 
         <hr class="border-t border-black border-opacity-10 my-4 mx-auto">
     </nav>
 
-    <main>
+    <main class="bg-white mb-20">
         @yield('content')
     </main>
 
     <footer
-        class="flex flex-col items-center self-stretch px-16 py-7 mt-56 w-full bg-zinc-100 max-md:px-5 max-md:mt-10 max-md:max-w-full">
+        class="flex flex-col items-center self-stretch px-16 py-7 w-full bg-zinc-100 max-md:px-5 max-md:mt-10 max-md:max-w-full">
         <div class="self-stretch max-md:max-w-full">
             <div class="flex gap-5 max-md:flex-col">
                 <div class="flex flex-col w-[45%] max-md:ml-0 max-md:w-full">
@@ -245,6 +277,21 @@
             Buket_ku.co © 2000-{{ now()->year }}, All Rights Reserved
         </p>
     </footer>
+
+    <script>
+        function closeBanner() {
+            const banner = document.getElementById('promoBanner');
+            banner.classList.add('hidden');
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            // Tunggu beberapa saat setelah form disubmit untuk mengosongkan kolom input
+            setTimeout(() => {
+                document.getElementById('searchInput').value = '';
+            }, 100); // Waktu tunda (100ms) untuk memastikan request berjalan lebih dulu
+        });
+    </script>
+    @yield('scripts')
 </body>
 
 </html>

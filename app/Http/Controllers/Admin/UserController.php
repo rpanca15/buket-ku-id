@@ -18,6 +18,12 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
+    public function show($id)
+    {
+        $user = User::with(['orders.status'])->findOrFail($id);
+        return view('admin.users.show', compact('user'));
+    }
+
     /**
      * Menampilkan form untuk membuat pengguna baru.
      */
