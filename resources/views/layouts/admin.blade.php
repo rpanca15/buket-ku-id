@@ -138,6 +138,13 @@
                             <span class="ml-2">Customers</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('backup.index') }}"
+                            class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
+                            <i class="fas fa-database"></i> <!-- Backup Icon -->
+                            <span class="ml-2">Backup</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <form action="{{ route('logout') }}" method="POST" class="flex items-center justify-center p-2">

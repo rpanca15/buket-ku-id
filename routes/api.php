@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\Admin\OrderController;
+use App\Http\Controllers\Api\Admin\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders/{orderId}', [OrderController::class, 'show']);
     Route::get('/orders/{orderId}/payment', [OrderController::class, 'showPayment']);
     Route::post('/orders/{orderId}/payment', [OrderController::class, 'processPayment']);
+
+    // Admin only routes
+    Route::middleware(['role:admin'])->group(function () {
+        Route::apiResource('products', ProductController::class);
+    });
 });

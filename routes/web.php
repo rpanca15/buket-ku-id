@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -161,4 +162,16 @@ Route::group(['middleware' => ['role:admin']], function () {
             'update' => 'users.update',
             'destroy' => 'users.destroy',
         ]);
+
+    // Backup routes
+    Route::prefix('admin/backup')->name('backup.')->group(function () {
+        Route::get('/', [BackupController::class, 'index'])->name('index');
+        Route::post('/database', [BackupController::class, 'backupDatabase'])->name('database');
+        Route::post('/project', [BackupController::class, 'backupProject'])->name('project');
+        Route::post('/restore/{backup}', [BackupController::class, 'restoreDatabase'])->name('restore');
+        Route::get('/download/{backup}', [BackupController::class, 'downloadBackup'])->name('download');
+        Route::delete('/delete/{backup}', [BackupController::class, 'deleteBackup'])->name('delete');
+        Route::get('/check-restore-status', [BackupController::class, 'checkRestoreStatus'])->name('check-restore');
+        Route::post('/upload-restore', [BackupController::class, 'uploadAndRestore'])->name('upload-restore'); // Add this line
+    });
 });
