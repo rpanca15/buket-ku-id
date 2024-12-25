@@ -142,7 +142,7 @@
                         <a href="{{ route('backup.index') }}"
                             class="flex gap-6 items-center font-bold py-3 px-4 text-white hover:bg-white hover:text-x-purple transition-colors duration-300 ease-in-out">
                             <i class="fas fa-database"></i> <!-- Backup Icon -->
-                            <span class="ml-2">Backup</span>
+                            <span class="ml-4">Backup</span>
                         </a>
                     </li>
                 </ul>
