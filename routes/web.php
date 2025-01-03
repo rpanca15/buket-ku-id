@@ -53,6 +53,16 @@ Route::get('/email/verify/expired/{id}', function ($id) {
 Route::post('/email/resend', [RegisterController::class, 'resendVerificationLink'])
     ->name('verification.resend');
 
+Route::get('/email/verify', function (Request $request) {
+    return view('auth.verify-email', ['email' => $request->email]);
+})->name('verification.notice');
+
+Route::post('/email/verify', [RegisterController::class, 'verifyCode'])
+    ->name('verification.verify-code');
+
+Route::post('/email/verify/resend', [RegisterController::class, 'resendVerificationCode'])
+    ->name('verification.resend');
+
 // Halaman beranda dan produk, bisa diakses oleh semua pengguna (guest dan user)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'home'])->name('hom');

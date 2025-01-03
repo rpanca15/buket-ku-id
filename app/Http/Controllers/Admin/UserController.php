@@ -46,16 +46,18 @@ class UserController extends Controller
             'no_telepon' => 'required|string|max:15|unique:users',  // Validasi nomor telepon
         ]);
 
-        // Membuat pengguna baru
+        // Membuat pengguna baru dengan email terverifikasi
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password), // Meng-hash password
             'role' => $request->role,
-            'no_telepon' => $request->no_telepon, // Menyimpan nomor telepon
+            'no_telepon' => $request->no_telepon,
+            'verification_code' => null,  // Pastikan kode verifikasi kosong
+            'verification_code_expires_at' => null // Pastikan waktu kadaluarsa kosong
         ]);
 
-        return redirect()->route('users.index')->with('success', 'Pengguna berhasil ditambahkan.');
+        return redirect()->route('users.index')->with('success', 'Pengguna berhasil ditambahkan dan email terverifikasi.');
     }
 
     /**

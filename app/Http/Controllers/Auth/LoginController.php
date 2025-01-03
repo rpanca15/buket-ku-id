@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationCodeMail;
 
 class LoginController extends Controller
 {
@@ -17,6 +19,14 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('auth.login');
+    }
+
+    /**
+     * Generate random numeric verification code
+     */
+    private function generateNumericCode($length = 6)
+    {
+        return str_pad(random_int(0, pow(10, $length) - 1), $length, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -30,29 +40,28 @@ class LoginController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        // Cari user berdasarkan email
         $user = User::where('email', $credentials['email'])->first();
 
-        // Cek apakah user ditemukan dan password sesuai
         if ($user && Hash::check($credentials['password'], $user->password)) {
 
-            // Cek apakah email sudah diverifikasi
             if (!$user->hasVerifiedEmail()) {
+                $user->verification_code = $this->generateNumericCode();
+                $user->verification_code_expires_at = now()->addHours(1);
+                $user->save();
+                Mail::to($user->email)->send(new VerificationCodeMail($user, $user->verification_code));
+                
                 Cache::put('error', 'Email belum diverifikasi!', now()->addSeconds(5));
-                return back();
+                return redirect()->route('verification.notice', ['email' => $user->email]);
             }
 
-            // Login user secara manual
             Auth::login($user);
 
-            // Regenerate session
             $request->session()->regenerate();
             Cache::put('success', 'Login berhasil! Selamat datang!', now()->addSeconds(5));
 
             return redirect()->intended('/');
         }
 
-        // Jika gagal
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ])->withInput();

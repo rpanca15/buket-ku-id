@@ -67,7 +67,7 @@
             }
         </script>
     @elseif (Cache::has('error'))
-
+    
     @elseif (Cache::has('info'))
         <!-- Modal untuk pesan error -->
         <div id="info-modal" class="absolute top-10 left-0 right-0 z-50 flex justify-center items-center">
